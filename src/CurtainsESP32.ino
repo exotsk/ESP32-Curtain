@@ -15,12 +15,12 @@
 
 #define MQTT_VERSION MQTT_VERSION_3_1_1
 
-String clientId = "ESP32-Shabarova"; //Шабарова, Зоя Алексеевна
-#define MQTT_ID "/ESP32-Shabarova/"
-#define MQTT_STEP2 "/ESP32-Shabarova/Borisov/" //Борисов Юрий Алексеевич
-#define MQTT_STEP1 "/ESP32-Shabarova/Obuhov/"  //Обухов Дмитрий Константинович
-#define PUB_STEPS2 "/ESP32-Shabarova/Borisov_step/"
-#define PUB_STEPS1 "/ESP32-Shabarova/Obuhov_step/"
+String clientId = "CURTAINS";
+#define MQTT_ID "/CURTAINS/"
+#define MQTT_STEP2 "/CURTAINS/ROLL2/"
+#define MQTT_STEP1 "/CURTAINS/ROLL1/"
+#define PUB_STEPS2 "/CURTAINS/ROLL2_step/"
+#define PUB_STEPS1 "/CURTAINS/ROLL1_step/"
 #define CURTMAXIMUM 550
 #define STOPHYSTERESIS 5
 #define MSG_BUFFER_SIZE 20
