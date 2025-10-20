@@ -9,6 +9,7 @@
 ## 🌟 Features
 
 - 🎯 **Dual Stepper Control** - Control two independent curtains
+- 🌐 **Built-in Web Interface** - Control via browser (no MQTT required!)
 - 📡 **MQTT Integration** - Remote control via MQTT protocol
 - 🔒 **Limit Switches** - Safe automatic stopping at end positions
 - 🔄 **Auto-Recovery** - Watchdog timer and automatic reconnection
@@ -63,7 +64,12 @@ platformio run --target upload
 platformio device monitor
 ```
 
-### 3. Test It
+### 3. Access Web Interface
+After uploading, open your browser:
+- **http://curtains.local** (mDNS)
+- or **http://192.168.1.XXX** (IP from serial monitor)
+
+### 4. Test with MQTT (Optional)
 ```bash
 # Open curtain 1
 mosquitto_pub -h YOUR_MQTT_IP -t /CURTAINS/ROLL1/ -m "0"
@@ -72,7 +78,9 @@ mosquitto_pub -h YOUR_MQTT_IP -t /CURTAINS/ROLL1/ -m "0"
 mosquitto_pub -h YOUR_MQTT_IP -t /CURTAINS/ROLL1/ -m "550"
 ```
 
-📖 **Detailed guide**: See [`QUICK_START.md`](QUICK_START.md)
+📖 **Detailed guides**: 
+- Web Interface: [`WEB_INTERFACE.md`](WEB_INTERFACE.md)
+- Full Setup: [`QUICK_START.md`](QUICK_START.md)
 
 ## 🔌 Pin Configuration
 
@@ -180,6 +188,7 @@ See [`QUICK_START.md`](QUICK_START.md) for detailed troubleshooting.
 
 ## 📚 Documentation
 
+- [`WEB_INTERFACE.md`](WEB_INTERFACE.md) - **NEW!** Built-in web interface guide
 - [`QUICK_START.md`](QUICK_START.md) - Setup and usage guide
 - [`OPTIMIZATION_NOTES.md`](OPTIMIZATION_NOTES.md) - Technical details of all optimizations
 - [`include/config.h`](include/config.h) - Optional configuration file template
