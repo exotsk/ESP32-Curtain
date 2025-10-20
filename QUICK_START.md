@@ -1,27 +1,27 @@
-# ESP32 Curtain Controller - Quick Start Guide
+# Контроллер Штор ESP32 - Руководство Быстрого Старта
 
-## ⚡ Quick Setup (5 Minutes)
+## ⚡ Быстрая Настройка (5 Минут)
 
-### Step 1: Configure WiFi & MQTT
-Open `src/CurtainsESP32.ino` and change these lines (around line 58):
+### Шаг 1: Настройте WiFi и MQTT
+Откройте `src/CurtainsESP32.ino` и измените эти строки (около строки 58):
 
 ```cpp
-const char* WIFI_SSID = "Your SSID";           // ← Your WiFi network name
-const char* WIFI_PASSWORD = "Your Password";    // ← Your WiFi password
-const char* MQTT_SERVER = "Your mqtt server";   // ← Your MQTT broker IP (e.g., "192.168.1.100")
+const char* WIFI_SSID = "Your SSID";           // ← Имя вашей WiFi сети
+const char* WIFI_PASSWORD = "Your Password";    // ← Пароль WiFi
+const char* MQTT_SERVER = "Your mqtt server";   // ← IP вашего MQTT брокера (например, "192.168.1.100")
 ```
 
-### Step 2: Upload to ESP32
+### Шаг 2: Загрузите на ESP32
 ```bash
 platformio run --target upload
 ```
 
-### Step 3: Monitor Serial Output
+### Шаг 3: Мониторинг Вывода Serial
 ```bash
 platformio device monitor
 ```
 
-You should see:
+Вы должны увидеть:
 ```
 ESP32 Curtain Controller Starting...
 Watchdog timer enabled
@@ -34,74 +34,74 @@ Steppers configured
 Setup complete!
 ```
 
-### Step 4: Test MQTT Control
+### Шаг 4: Тест Управления через MQTT
 
-#### Control Curtain Position
+#### Управление Позицией Шторы
 ```bash
-# Open curtain 1 (position 0)
-mosquitto_pub -h YOUR_MQTT_IP -t /CURTAINS/ROLL1/ -m "0"
+# Открыть штору 1 (позиция 0)
+mosquitto_pub -h ВАШ_MQTT_IP -t /CURTAINS/ROLL1/ -m "0"
 
-# Close curtain 1 (position 550)
-mosquitto_pub -h YOUR_MQTT_IP -t /CURTAINS/ROLL1/ -m "550"
+# Закрыть штору 1 (позиция 550)
+mosquitto_pub -h ВАШ_MQTT_IP -t /CURTAINS/ROLL1/ -m "550"
 
-# Half open curtain 1 (position 275)
-mosquitto_pub -h YOUR_MQTT_IP -t /CURTAINS/ROLL1/ -m "275"
+# Полуоткрытая штора 1 (позиция 275)
+mosquitto_pub -h ВАШ_MQTT_IP -t /CURTAINS/ROLL1/ -m "275"
 
-# Control curtain 2
-mosquitto_pub -h YOUR_MQTT_IP -t /CURTAINS/ROLL2/ -m "275"
+# Управление шторой 2
+mosquitto_pub -h ВАШ_MQTT_IP -t /CURTAINS/ROLL2/ -m "275"
 ```
 
-#### Monitor Position Updates
+#### Мониторинг Обновлений Позиции
 ```bash
-mosquitto_sub -h YOUR_MQTT_IP -t /CURTAINS/#
+mosquitto_sub -h ВАШ_MQTT_IP -t /CURTAINS/#
 ```
 
 ---
 
-## 🔌 Hardware Connections
+## 🔌 Подключение Оборудования
 
-### Stepper 1 (Curtain 1)
-- **Motor Pins**: GPIO 32, 25, 33, 26
-- **Upper Limit Switch**: GPIO 17 (active LOW)
-- **Lower Limit Switch**: GPIO 16 (active LOW)
+### Двигатель 1 (Штора 1)
+- **Пины Двигателя**: GPIO 32, 25, 33, 26
+- **Верхний Концевик**: GPIO 17 (активный LOW)
+- **Нижний Концевик**: GPIO 16 (активный LOW)
 
-### Stepper 2 (Curtain 2)
-- **Motor Pins**: GPIO 23, 21, 22, 19
-- **Upper Limit Switch**: GPIO 14 (active LOW)
-- **Lower Limit Switch**: GPIO 12 (active LOW)
+### Двигатель 2 (Штора 2)
+- **Пины Двигателя**: GPIO 23, 21, 22, 19
+- **Верхний Концевик**: GPIO 14 (активный LOW)
+- **Нижний Концевик**: GPIO 12 (активный LOW)
 
-### Limit Switch Wiring
+### Подключение Концевых Выключателей
 ```
-Switch → GPIO Pin
-Switch → GND
-(Internal pullup enabled, switch pulls pin LOW when pressed)
+Выключатель → GPIO Пин
+Выключатель → GND
+(Внутренняя подтяжка включена, выключатель тянет пин к LOW при срабатывании)
 ```
 
 ---
 
-## 📡 MQTT Topics
+## 📡 Топики MQTT
 
-### Command Topics (Subscribe)
-- `/CURTAINS/ROLL1/` - Control curtain 1 position
-- `/CURTAINS/ROLL2/` - Control curtain 2 position
+### Топики Команд (Подписка)
+- `/CURTAINS/ROLL1/` - Управление позицией шторы 1
+- `/CURTAINS/ROLL2/` - Управление позицией шторы 2
 
-**Value Format**: Integer 0-550 (multiplied by 100 internally for steps)
+**Формат Значения**: Целое число 0-550 (умножается на 100 внутри для шагов)
 
-### Status Topics (Publish)
-- `/CURTAINS/ROLL1_step/` - Current position of curtain 1
-- `/CURTAINS/ROLL2_step/` - Current position of curtain 2
+### Топики Статуса (Публикация)
+- `/CURTAINS/ROLL1_step/` - Текущая позиция шторы 1
+- `/CURTAINS/ROLL2_step/` - Текущая позиция шторы 2
 
-**Value Format**: Integer 0-550 (retained message)
+**Формат Значения**: Целое число 0-550 (retained сообщение)
 
 ---
 
-## 🏠 Home Assistant Integration
+## 🏠 Интеграция с Home Assistant
 
 ### configuration.yaml
 ```yaml
 mqtt:
   cover:
-    - name: "Living Room Curtain 1"
+    - name: "Штора в гостиной 1"
       command_topic: "/CURTAINS/ROLL1/"
       position_topic: "/CURTAINS/ROLL1_step/"
       set_position_topic: "/CURTAINS/ROLL1/"
@@ -113,7 +113,7 @@ mqtt:
       qos: 0
       retain: true
       
-    - name: "Living Room Curtain 2"
+    - name: "Штора в гостиной 2"
       command_topic: "/CURTAINS/ROLL2/"
       position_topic: "/CURTAINS/ROLL2_step/"
       set_position_topic: "/CURTAINS/ROLL2/"
@@ -128,81 +128,81 @@ mqtt:
 
 ---
 
-## 🛠️ Troubleshooting
+## 🛠️ Устранение Неполадок
 
-### WiFi Not Connecting
-1. Check SSID and password are correct
-2. Ensure 2.4GHz network (ESP32 doesn't support 5GHz)
-3. Watch serial monitor for error messages
-4. Device will auto-restart after 20 seconds if WiFi fails
+### WiFi Не Подключается
+1. Проверьте правильность SSID и пароля
+2. Убедитесь, что это сеть 2.4ГГц (ESP32 не поддерживает 5ГГц)
+3. Следите за Serial монитором для сообщений об ошибках
+4. Устройство автоматически перезагрузится через 20 секунд при сбое WiFi
 
-### MQTT Not Connecting
-1. Verify MQTT broker IP address
-2. Check if MQTT broker is running: `netstat -an | grep 1883`
-3. If using authentication, set `MQTT_USER` and `MQTT_PASS`
-4. Check firewall settings
-5. Serial monitor shows connection attempts with error codes
+### MQTT Не Подключается
+1. Проверьте IP адрес MQTT брокера
+2. Проверьте, работает ли MQTT брокер: `netstat -an | grep 1883`
+3. Если используется аутентификация, установите `MQTT_USER` и `MQTT_PASS`
+4. Проверьте настройки брандмауэра
+5. Serial монитор показывает попытки подключения с кодами ошибок
 
-### Stepper Not Moving
-1. Check motor power supply
-2. Verify GPIO pin connections
-3. Send MQTT command and watch serial monitor
-4. Check if limit switches are triggered
-5. Motor will disable outputs when limit is reached
+### Двигатель Не Двигается
+1. Проверьте блок питания двигателя
+2. Проверьте подключения GPIO пинов
+3. Отправьте MQTT команду и следите за Serial монитором
+4. Проверьте, не сработали ли концевые выключатели
+5. Двигатель отключит выходы при достижении концевика
 
-### Position Not Updating
-1. Check MQTT connection (serial monitor shows "connected!")
-2. Verify MQTT broker is receiving messages
-3. Position only publishes when changed
-4. Use `mosquitto_sub -h YOUR_IP -t /CURTAINS/#` to monitor
+### Позиция Не Обновляется
+1. Проверьте подключение MQTT (Serial монитор показывает "connected!")
+2. Убедитесь, что MQTT брокер получает сообщения
+3. Позиция публикуется только при изменении
+4. Используйте `mosquitto_sub -h ВАШ_IP -t /CURTAINS/#` для мониторинга
 
-### System Hangs
-- Watchdog timer will auto-restart after 10 seconds
-- Check serial monitor for last message before hang
-- Verify power supply is stable
-
----
-
-## 🎛️ Calibration
-
-### First-Time Setup
-1. Power on ESP32
-2. Manually move curtains to closed position
-3. Press limit switch at closed position
-4. Send MQTT command to move to position 550
-5. If curtain doesn't reach fully closed, adjust `CURTAIN_MAXIMUM` constant
-6. Send command to move to position 0
-7. Press limit switch at open position
-
-### Adjusting Maximum Position
-In `CurtainsESP32.ino`, change:
-```cpp
-#define CURTAIN_MAXIMUM 550  // Adjust this value
-```
-Larger value = more steps = longer travel distance
-
-### Adjusting Speed
-```cpp
-stepper1.setMaxSpeed(600);        // Increase for faster movement
-stepper1.setAcceleration(300);    // Increase for quicker acceleration
-```
+### Система Зависает
+- Сторожевой таймер автоматически перезагрузит через 10 секунд
+- Проверьте Serial монитор для последнего сообщения перед зависанием
+- Убедитесь, что блок питания стабильный
 
 ---
 
-## 🔐 Optional: MQTT Authentication
+## 🎛️ Калибровка
 
-If your MQTT broker requires authentication:
+### Первоначальная Настройка
+1. Включите ESP32
+2. Вручную переместите шторы в закрытое положение
+3. Нажмите концевой выключатель в закрытом положении
+4. Отправьте MQTT команду для перемещения в позицию 550
+5. Если штора не достигает полностью закрытого положения, настройте константу `CURTAIN_MAXIMUM`
+6. Отправьте команду для перемещения в позицию 0
+7. Нажмите концевой выключатель в открытом положении
 
+### Настройка Максимальной Позиции
+В `CurtainsESP32.ino` измените:
 ```cpp
-const char* MQTT_USER = "your_username";
-const char* MQTT_PASS = "your_password";
+#define CURTAIN_MAXIMUM 550  // Настройте это значение
+```
+Большее значение = больше шагов = больше расстояние перемещения
+
+### Настройка Скорости
+```cpp
+stepper1.setMaxSpeed(600);        // Увеличьте для более быстрого движения
+stepper1.setAcceleration(300);    // Увеличьте для более быстрого ускорения
 ```
 
 ---
 
-## 📊 Serial Monitor Output Examples
+## 🔐 Опционально: Аутентификация MQTT
 
-### Normal Operation
+Если ваш MQTT брокер требует аутентификацию:
+
+```cpp
+const char* MQTT_USER = "ваше_имя_пользователя";
+const char* MQTT_PASS = "ваш_пароль";
+```
+
+---
+
+## 📊 Примеры Вывода Serial Монитора
+
+### Нормальная Работа
 ```
 ESP32 Curtain Controller Starting...
 Watchdog timer enabled
@@ -222,7 +222,7 @@ Upper limit reached
 Stepper 2 -> 100.00
 ```
 
-### Connection Issues
+### Проблемы с Подключением
 ```
 Attempting MQTT connection...failed, rc=-2
 Next retry in: 5s
@@ -230,68 +230,68 @@ Attempting MQTT connection...failed, rc=-2
 Next retry in: 10s
 ```
 
-**Error Codes**:
-- `-2`: MQTT_CONNECT_FAILED (check broker IP)
-- `-4`: MQTT_CONNECTION_TIMEOUT (network issue)
-- `5`: MQTT_CONNECTION_LOST (check WiFi)
+**Коды Ошибок**:
+- `-2`: MQTT_CONNECT_FAILED (проверьте IP брокера)
+- `-4`: MQTT_CONNECTION_TIMEOUT (проблема с сетью)
+- `5`: MQTT_CONNECTION_LOST (проверьте WiFi)
 
 ---
 
-## ⚙️ Advanced Configuration
+## ⚙️ Расширенная Конфигурация
 
-### Change MQTT Topics
+### Изменение Топиков MQTT
 ```cpp
-const char* MQTT_STEP1 = "/CURTAINS/ROLL1/";      // Your custom topic
-const char* PUB_STEPS1 = "/CURTAINS/ROLL1_step/"; // Your custom status topic
+const char* MQTT_STEP1 = "/CURTAINS/ROLL1/";      // Ваш собственный топик
+const char* PUB_STEPS1 = "/CURTAINS/ROLL1_step/"; // Ваш топик статуса
 ```
 
-### Adjust Safety Margins
+### Настройка Зон Безопасности
 ```cpp
-#define STOP_HYSTERESIS 5  // Dead zone around limit switches (prevents bouncing)
+#define STOP_HYSTERESIS 5  // Мёртвая зона вокруг концевиков (предотвращает дребезг)
 ```
 
-### Watchdog Timeout
+### Таймаут Сторожевого Таймера
 ```cpp
-#define WATCHDOG_TIMEOUT_S 10  // Seconds before auto-restart
+#define WATCHDOG_TIMEOUT_S 10  // Секунды до автоперезагрузки
 ```
 
-### WiFi Connection Timeout
+### Таймаут Подключения WiFi
 ```cpp
-#define WIFI_CONNECT_TIMEOUT_MS 20000  // Milliseconds before giving up
+#define WIFI_CONNECT_TIMEOUT_MS 20000  // Миллисекунды до отказа
 ```
 
 ---
 
-## 📈 Performance Notes
+## 📈 Примечания о Производительности
 
-- **Response Time**: < 100ms from MQTT command to motor start
-- **Position Updates**: Published only on change (reduces MQTT traffic)
-- **Reconnection**: Exponential backoff (5s → 10s → 20s → 30s max)
-- **Watchdog Protection**: Auto-restart if system hangs > 10 seconds
-- **Memory Usage**: ~45KB program / ~10KB RAM
-
----
-
-## 🆘 Support
-
-1. Check `OPTIMIZATION_NOTES.md` for detailed technical information
-2. Review serial monitor output for error messages
-3. Verify hardware connections
-4. Test MQTT broker independently
+- **Время Отклика**: < 100мс от MQTT команды до запуска двигателя
+- **Обновления Позиции**: Публикуются только при изменении (снижает MQTT трафик)
+- **Переподключение**: Экспоненциальная задержка (5с → 10с → 20с → макс 30с)
+- **Защита Сторожевого Таймера**: Автоперезагрузка при зависании > 10 секунд
+- **Использование Памяти**: ~45КБ программа / ~10КБ RAM
 
 ---
 
-## 📝 Key Improvements vs Original
+## 🆘 Поддержка
 
-✅ **Fixed critical bug** in stepper 1 position tracking  
-✅ **Non-blocking MQTT** reconnection  
-✅ **Watchdog timer** for automatic recovery  
-✅ **Input validation** prevents invalid commands  
-✅ **Better error handling** with serial debugging  
-✅ **Exponential backoff** for network reliability  
-✅ **Code deduplication** - easier to maintain  
-✅ **WiFi auto-recovery** - reconnects automatically  
+1. Ознакомьтесь с `OPTIMIZATION_NOTES_RU.md` для детальной технической информации
+2. Просмотрите вывод Serial монитора для сообщений об ошибках
+3. Проверьте подключение оборудования
+4. Протестируйте MQTT брокер независимо
 
 ---
 
-**Ready to automate? Happy curtain controlling! 🎉**
+## 📝 Ключевые Улучшения по Сравнению с Оригиналом
+
+✅ **Исправлена критическая ошибка** в отслеживании позиции двигателя 1  
+✅ **Неблокирующее MQTT** переподключение  
+✅ **Сторожевой таймер** для автоматического восстановления  
+✅ **Валидация ввода** предотвращает неверные команды  
+✅ **Улучшенная обработка ошибок** с отладкой через Serial  
+✅ **Экспоненциальная задержка** для надёжности сети  
+✅ **Устранение дублирования кода** - проще поддерживать  
+✅ **Автовосстановление WiFi** - переподключается автоматически  
+
+---
+
+**Готовы к автоматизации? Приятного управления шторами! 🎉**

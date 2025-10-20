@@ -1,54 +1,54 @@
-# ESP32 Curtain Controller - Optimization Summary
+# Контроллер Штор ESP32 - Сводка Оптимизации
 
-## Overview
-This document describes all optimizations applied to the ESP32 Curtain Controller project.
-
----
-
-## 🐛 Critical Bugs Fixed
-
-### 1. **Variable Name Error (Line 141)**
-- **Issue**: `checkStep1()` was checking `steps_from_zero2` instead of `steps_from_zero1`
-- **Impact**: Stepper 1 hysteresis logic was reading Stepper 2's position
-- **Fix**: Unified both functions into `processStepperController()` to eliminate duplicate code and prevent such errors
+## Обзор
+Этот документ описывает все оптимизации, применённые к проекту контроллера штор ESP32.
 
 ---
 
-## 🚀 Performance Optimizations
+## 🐛 Исправленные Критические Ошибки
 
-### 1. **Non-blocking MQTT Reconnection**
-- **Before**: Blocking `while` loop with 6-second delays
-- **After**: Non-blocking reconnection with exponential backoff
-- **Benefit**: System remains responsive during connection issues
-
-### 2. **Exponential Backoff Strategy**
-- Starts at 5 seconds, doubles on each failure, max 30 seconds
-- Reduces network load during outages
-- Faster recovery when connection is restored
-
-### 3. **Eliminated Unnecessary Delays**
-- Removed `delay(1000)` from main loop
-- Added `yield()` for better cooperative multitasking
-- Improved stepper motor responsiveness
-
-### 4. **WiFi Connection Timeout**
-- Added 20-second timeout to prevent infinite connection loops
-- Auto-restart on connection failure
-- Watchdog timer reset during connection attempts
+### 1. **Ошибка в Имени Переменной (Строка 141)**
+- **Проблема**: `checkStep1()` проверял `steps_from_zero2` вместо `steps_from_zero1`
+- **Влияние**: Логика гистерезиса Двигателя 1 читала позицию Двигателя 2
+- **Исправление**: Объединены обе функции в `processStepperController()` для устранения дублирования кода и предотвращения подобных ошибок
 
 ---
 
-## 🔧 Code Quality Improvements
+## 🚀 Оптимизации Производительности
 
-### 1. **Code Deduplication**
-- **Eliminated**: `checkStep1()` and `checkStep2()` (140 lines of duplicate code)
-- **Created**: Single `processStepperController()` function
-- **Benefit**: 
-  - Easier maintenance
-  - Consistent behavior
-  - Single point of modification
+### 1. **Неблокирующее Переподключение MQTT**
+- **До**: Блокирующий цикл `while` с 6-секундными задержками
+- **После**: Неблокирующее переподключение с экспоненциальной задержкой
+- **Преимущество**: Система остаётся отзывчивой при проблемах с подключением
 
-### 2. **Data Structure Optimization**
+### 2. **Стратегия Экспоненциальной Задержки**
+- Начинается с 5 секунд, удваивается при каждом сбое, максимум 30 секунд
+- Снижает нагрузку на сеть во время перебоев
+- Более быстрое восстановление при возобновлении подключения
+
+### 3. **Устранены Ненужные Задержки**
+- Удалена `delay(1000)` из главного цикла
+- Добавлен `yield()` для лучшей кооперативной многозадачности
+- Улучшена отзывчивость шаговых двигателей
+
+### 4. **Таймаут Подключения WiFi**
+- Добавлен 20-секундный таймаут для предотвращения бесконечных циклов подключения
+- Автоперезагрузка при сбое подключения
+- Сброс сторожевого таймера во время попыток подключения
+
+---
+
+## 🔧 Улучшения Качества Кода
+
+### 1. **Устранение Дублирования Кода**
+- **Устранено**: `checkStep1()` и `checkStep2()` (140 строк дублирующегося кода)
+- **Создано**: Единая функция `processStepperController()`
+- **Преимущество**: 
+  - Более простое обслуживание
+  - Согласованное поведение
+  - Единая точка модификации
+
+### 2. **Оптимизация Структуры Данных**
 ```cpp
 struct StepperController {
   AccelStepper* stepper;
@@ -60,278 +60,278 @@ struct StepperController {
   const char* positionTopic;
 };
 ```
-- Encapsulates all stepper-related data
-- Easy to scale to more steppers
-- Improves code readability
+- Инкапсулирует все данные, связанные с двигателем
+- Легко масштабировать для большего количества двигателей
+- Улучшает читаемость кода
 
-### 3. **Configuration Management**
-- Created `config.h` for easy configuration
-- Separated concerns: code vs. configuration
-- Better constant naming (descriptive, self-documenting)
+### 3. **Управление Конфигурацией**
+- Создан `config.h` для упрощения конфигурации
+- Разделение обязанностей: код vs конфигурация
+- Лучшее именование констант (описательное, самодокументирующееся)
 
-### 4. **Improved Code Readability**
-- Replaced magic numbers with named constants
-- Added comprehensive comments
-- Better variable naming conventions
-- Consistent code formatting
+### 4. **Улучшенная Читаемость Кода**
+- Замена магических чисел именованными константами
+- Добавлены исчерпывающие комментарии
+- Лучшие соглашения об именовании переменных
+- Согласованное форматирование кода
 
 ---
 
-## 🛡️ Reliability Enhancements
+## 🛡️ Улучшения Надёжности
 
-### 1. **Watchdog Timer**
+### 1. **Сторожевой Таймер**
 ```cpp
 esp_task_wdt_init(WATCHDOG_TIMEOUT_S, true);
 esp_task_wdt_add(NULL);
 ```
-- Auto-restart on system hang (10-second timeout)
-- Protection against infinite loops
-- Increased system uptime
+- Автоперезагрузка при зависании системы (таймаут 10 секунд)
+- Защита от бесконечных циклов
+- Увеличенное время безотказной работы
 
-### 2. **WiFi Auto-Recovery**
-- Monitors WiFi connection status in main loop
-- Automatic reconnection on disconnect
-- Prevents silent connection loss
+### 2. **Автовосстановление WiFi**
+- Мониторинг статуса подключения WiFi в главном цикле
+- Автоматическое переподключение при отключении
+- Предотвращает тихую потерю подключения
 
-### 3. **Input Validation**
-- Validates MQTT payload length
-- Validates position range (0 to CURTAIN_MAXIMUM)
-- Prevents buffer overflows
-- Guards against invalid commands
+### 3. **Валидация Ввода**
+- Проверяет длину MQTT payload
+- Проверяет диапазон позиции (0 до CURTAIN_MAXIMUM)
+- Предотвращает переполнение буфера
+- Защита от неверных команд
 
-### 4. **Error Handling & Logging**
+### 4. **Обработка Ошибок и Логирование**
 ```cpp
 Serial.println("Error: Position out of range");
 Serial.println("WiFi disconnected! Reconnecting...");
 ```
-- Comprehensive debug output
-- Connection status reporting
-- Error condition logging
-- Easier troubleshooting
+- Полный вывод отладки
+- Отчёт о статусе подключения
+- Логирование состояний ошибок
+- Более простая диагностика
 
 ---
 
-## 📊 Memory Optimizations
+## 📊 Оптимизации Памяти
 
-### 1. **Constant Strings**
-- Replaced `String` objects with `const char*`
-- Reduced heap fragmentation
-- Lower memory footprint
+### 1. **Константные Строки**
+- Замена объектов `String` на `const char*`
+- Снижение фрагментации кучи
+- Меньший объём памяти
 
-### 2. **Eliminated Global Variables**
-- Removed: `got_int1`, `got_int2`, `got_float`, `p_payload`, `i`
-- Moved to local scope where appropriate
-- Reduced global namespace pollution
+### 2. **Устранены Глобальные Переменные**
+- Удалено: `got_int1`, `got_int2`, `got_float`, `p_payload`, `i`
+- Перенесено в локальную область видимости где уместно
+- Снижено загрязнение глобального пространства имён
 
-### 3. **Buffer Reuse**
-- Single `msgBuffer` for all operations
-- Reduced memory allocation overhead
-- More efficient memory usage
+### 3. **Переиспользование Буфера**
+- Единый `msgBuffer` для всех операций
+- Снижены накладные расходы на выделение памяти
+- Более эффективное использование памяти
 
 ---
 
-## 🔐 Security Improvements
+## 🔐 Улучшения Безопасности
 
-### 1. **MQTT Authentication Support**
+### 1. **Поддержка Аутентификации MQTT**
 ```cpp
 if (strlen(MQTT_USER) > 0) {
   connected = client.connect(clientId.c_str(), MQTT_USER, MQTT_PASS);
 }
 ```
-- Optional username/password authentication
-- Backwards compatible with anonymous connections
+- Опциональная аутентификация имя пользователя/пароль
+- Обратная совместимость с анонимными подключениями
 
-### 2. **Unique Client IDs**
+### 2. **Уникальные ID Клиентов**
 ```cpp
 String clientId = String(MQTT_CLIENT_ID) + "-" + String(random(0xffff), HEX);
 ```
-- Prevents client ID conflicts
-- Better for multiple device deployments
+- Предотвращает конфликты ID клиентов
+- Лучше для развёртывания множества устройств
 
-### 3. **Configuration Separation**
-- Credentials in separate header file
-- Easier to exclude from version control
-- Better security practices
+### 3. **Разделение Конфигурации**
+- Учётные данные в отдельном заголовочном файле
+- Проще исключить из системы контроля версий
+- Лучшие практики безопасности
 
 ---
 
-## 📈 Scalability Improvements
+## 📈 Улучшения Масштабируемости
 
-### 1. **Array-based Architecture**
+### 1. **Архитектура на Основе Массивов**
 ```cpp
 StepperController controllers[2] = { ... };
 ```
-- Easy to add more steppers (just add to array)
-- Loop-based processing
-- Consistent behavior across all steppers
+- Легко добавить больше двигателей (просто добавить в массив)
+- Обработка на основе циклов
+- Согласованное поведение для всех двигателей
 
-### 2. **Pin Configuration Arrays**
+### 2. **Массивы Конфигурации Пинов**
 ```cpp
 const int STEPPER1_PINS[4] = {32, 25, 33, 26};
 ```
-- Centralized pin configuration
-- Easier hardware modifications
-- Self-documenting pin assignments
+- Централизованная конфигурация пинов
+- Более простые модификации оборудования
+- Самодокументирующееся назначение пинов
 
 ---
 
-## 🎯 Functional Improvements
+## 🎯 Функциональные Улучшения
 
-### 1. **Enhanced Debugging**
-- Serial output at 115200 baud
-- Startup diagnostics
-- Connection status updates
-- Position change notifications
-- Error condition reporting
+### 1. **Расширенная Отладка**
+- Вывод Serial на скорости 115200 baud
+- Диагностика запуска
+- Обновления статуса подключения
+- Уведомления об изменении позиции
+- Отчёты об условиях ошибок
 
-### 2. **Better MQTT Feedback**
+### 2. **Улучшенная Обратная Связь MQTT**
 ```cpp
 if (client.subscribe(MQTT_STEP1)) {
   Serial.println("Subscribed to topic");
 }
 ```
-- Confirms successful subscriptions
-- Reports connection state
-- Tracks reconnection attempts
+- Подтверждает успешные подписки
+- Сообщает состояние подключения
+- Отслеживает попытки переподключения
 
-### 3. **Improved Position Tracking**
-- Published only on position change
-- Retained messages for state persistence
-- More reliable state synchronization
+### 3. **Улучшенное Отслеживание Позиции**
+- Публикуется только при изменении позиции
+- Сохранённые сообщения для сохранения состояния
+- Более надёжная синхронизация состояния
 
 ---
 
-## 📝 Documentation Improvements
+## 📝 Улучшения Документации
 
-### 1. **Inline Comments**
-- Explains all major operations
-- Documents configuration constants
-- Describes function purposes
+### 1. **Встроенные Комментарии**
+- Объясняет все основные операции
+- Документирует константы конфигурации
+- Описывает назначение функций
 
-### 2. **Pin Documentation**
+### 2. **Документация Пинов**
 ```cpp
-const int SWITCH_1_PIN = 17;  // Stepper 1 - Upper limit
+const int SWITCH_1_PIN = 17;  // Двигатель 1 - Верхний концевик
 ```
-- Each pin documented with purpose
-- Hardware connection guide
+- Каждый пин документирован с назначением
+- Руководство по подключению оборудования
 
-### 3. **Configuration Comments**
-- Clear instructions for required changes
-- Optional vs. required settings
-- Default values explained
-
----
-
-## 🔄 Compatibility
-
-### Maintained Features
-- ✅ Dual stepper motor control
-- ✅ MQTT command interface
-- ✅ Position reporting
-- ✅ Limit switch support
-- ✅ Hysteresis logic
-- ✅ Same MQTT topic structure
-- ✅ Same position scale (×100)
-
-### Breaking Changes
-- ⚠️ Serial debugging now enabled by default (115200 baud)
-- ⚠️ Watchdog timer requires periodic reset (handled automatically)
-- ⚠️ Different reconnection timing (exponential backoff vs. fixed 6s)
+### 3. **Комментарии к Конфигурации**
+- Чёткие инструкции для необходимых изменений
+- Опциональные vs обязательные настройки
+- Объяснены значения по умолчанию
 
 ---
 
-## 📊 Performance Metrics
+## 🔄 Совместимость
 
-| Metric | Before | After | Improvement |
-|--------|--------|-------|-------------|
-| Code Lines | 232 | 294 | +27% (with comments/structure) |
-| Duplicate Code | 140 lines | 0 lines | -100% |
-| Global Variables | 12 | 4 | -67% |
-| MQTT Reconnect | Blocking | Non-blocking | ∞% |
-| Main Loop Delay | 1000ms | 0ms | -100% |
-| Error Handling | None | Comprehensive | ∞% |
-| Debug Output | None | Full | ∞% |
+### Сохранённые Возможности
+- ✅ Управление двумя шаговыми двигателями
+- ✅ Интерфейс команд MQTT
+- ✅ Отчёт о позиции
+- ✅ Поддержка концевых выключателей
+- ✅ Логика гистерезиса
+- ✅ Та же структура топиков MQTT
+- ✅ Тот же масштаб позиции (×100)
+
+### Критические Изменения
+- ⚠️ Отладка через Serial теперь включена по умолчанию (115200 baud)
+- ⚠️ Сторожевой таймер требует периодического сброса (обрабатывается автоматически)
+- ⚠️ Другое время переподключения (экспоненциальная задержка vs фиксированные 6с)
 
 ---
 
-## 🚦 Getting Started
+## 📊 Метрики Производительности
 
-### 1. Configure Settings
-Edit `include/config.h` or directly in `CurtainsESP32.ino`:
+| Метрика | До | После | Улучшение |
+|---------|-----|-------|-----------|
+| Строк Кода | 232 | 294 | +27% (с комментариями/структурой) |
+| Дублирование Кода | 140 строк | 0 строк | -100% |
+| Глобальные Переменные | 12 | 4 | -67% |
+| Переподключение MQTT | Блокирующее | Неблокирующее | ∞% |
+| Задержка Главного Цикла | 1000мс | 0мс | -100% |
+| Обработка Ошибок | Нет | Полная | ∞% |
+| Вывод Отладки | Нет | Полный | ∞% |
+
+---
+
+## 🚦 Начало Работы
+
+### 1. Настройте Параметры
+Отредактируйте `include/config.h` или непосредственно в `CurtainsESP32.ino`:
 ```cpp
-#define WIFI_SSID "YourNetworkName"
-#define WIFI_PASSWORD "YourPassword"
+#define WIFI_SSID "ИмяВашейСети"
+#define WIFI_PASSWORD "ВашПароль"
 #define MQTT_SERVER "192.168.1.100"
 ```
 
-### 2. Upload Firmware
+### 2. Загрузите Прошивку
 ```bash
 platformio run --target upload
 ```
 
-### 3. Monitor Serial Output
+### 3. Мониторинг Вывода Serial
 ```bash
 platformio device monitor
 ```
 
-### 4. Test MQTT Commands
+### 4. Тестирование MQTT Команд
 ```bash
-# Move curtain 1 to position 250 (25000 steps)
-mosquitto_pub -h YOUR_MQTT_SERVER -t /CURTAINS/ROLL1/ -m "250"
+# Переместить штору 1 в позицию 250 (25000 шагов)
+mosquitto_pub -h ВАШ_MQTT_СЕРВЕР -t /CURTAINS/ROLL1/ -m "250"
 
-# Move curtain 2 to fully open (0)
-mosquitto_pub -h YOUR_MQTT_SERVER -t /CURTAINS/ROLL2/ -m "0"
+# Переместить штору 2 в полностью открытое (0)
+mosquitto_pub -h ВАШ_MQTT_СЕРВЕР -t /CURTAINS/ROLL2/ -m "0"
 
-# Move curtain 1 to fully closed (550)
-mosquitto_pub -h YOUR_MQTT_SERVER -t /CURTAINS/ROLL1/ -m "550"
+# Переместить штору 1 в полностью закрытое (550)
+mosquitto_pub -h ВАШ_MQTT_СЕРВЕР -t /CURTAINS/ROLL1/ -m "550"
 ```
 
-### 5. Monitor Position
+### 5. Мониторинг Позиции
 ```bash
-# Subscribe to position updates
-mosquitto_sub -h YOUR_MQTT_SERVER -t /CURTAINS/#
+# Подписаться на обновления позиции
+mosquitto_sub -h ВАШ_MQTT_СЕРВЕР -t /CURTAINS/#
 ```
 
 ---
 
-## 🔮 Future Enhancement Recommendations
+## 🔮 Рекомендации по Будущим Улучшениям
 
-### Short Term
-1. **OTA Updates** - Add Over-The-Air firmware updates
-2. **Web Interface** - Built-in configuration web page
-3. **Home Assistant Integration** - MQTT Discovery support
-4. **Calibration Mode** - Automatic calibration routine
+### Краткосрочные
+1. **OTA Обновления** - Обновления прошивки по воздуху
+2. **Web-интерфейс** - Встроенная страница конфигурации
+3. **Интеграция Home Assistant** - Поддержка MQTT Discovery
+4. **Режим Калибровки** - Автоматическая процедура калибровки
 
-### Medium Term
-1. **Speed Profiles** - Configurable speed/acceleration per curtain
-2. **Scheduling** - Built-in time-based control
-3. **Scenes** - Predefined position presets
-4. **Manual Control** - Physical button support
+### Среднесрочные
+1. **Профили Скорости** - Настраиваемая скорость/ускорение для каждой шторы
+2. **Планирование** - Встроенное управление по времени
+3. **Сцены** - Предустановленные пресеты позиций
+4. **Ручное Управление** - Поддержка физических кнопок
 
-### Long Term
-1. **Light Sensors** - Automatic operation based on sunlight
-2. **Multi-room Support** - Centralized controller for multiple rooms
-3. **Energy Monitoring** - Track power consumption
-4. **Predictive Maintenance** - Motor health monitoring
-
----
-
-## 🤝 Contributing
-
-When making modifications:
-1. Test thoroughly with both steppers
-2. Verify limit switch behavior
-3. Check MQTT reconnection scenarios
-4. Monitor memory usage
-5. Update documentation
+### Долгосрочные
+1. **Датчики Освещённости** - Автоматическая работа на основе солнечного света
+2. **Поддержка Нескольких Комнат** - Централизованный контроллер для нескольких комнат
+3. **Мониторинг Энергопотребления** - Отслеживание потребления энергии
+4. **Предиктивное Обслуживание** - Мониторинг состояния двигателя
 
 ---
 
-## 📄 License
+## 🤝 Участие в Разработке
 
-Same as original project.
+При внесении изменений:
+1. Тщательно тестируйте с обоими двигателями
+2. Проверьте поведение концевых выключателей
+3. Проверьте сценарии переподключения MQTT
+4. Мониторьте использование памяти
+5. Обновите документацию
 
-## ✨ Credits
+---
 
-Optimized by AI Assistant - 2025
-Original project: https://geektimes.com/post/298515/
+## 📄 Лицензия
+
+Та же, что и оригинальный проект.
+
+## ✨ Авторы
+
+Оптимизировано AI Assistant - 2025
+Оригинальный проект: https://geektimes.com/post/298515/

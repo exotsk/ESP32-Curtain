@@ -1,41 +1,41 @@
-# Migration Guide: Old → New Version
+# Руководство по Миграции: Старая → Новая Версия
 
-> Guide for upgrading from the original version to the optimized 2025 version
+> Руководство по обновлению с оригинальной версии до оптимизированной версии 2025
 
-## 🔄 Quick Migration (5 Minutes)
+## 🔄 Быстрая Миграция (5 Минут)
 
-### Step 1: Backup Your Configuration
-Save your current WiFi and MQTT settings:
+### Шаг 1: Сохраните Вашу Конфигурацию
+Сохраните текущие настройки WiFi и MQTT:
 ```cpp
-// Old version - save these values:
+// Старая версия - сохраните эти значения:
 const char *ssid = "...";
 const char *password = "...";
 const char *mqtt_server = "...";
 ```
 
-### Step 2: Replace the Code
-1. Backup your old `CurtainsESP32.ino` file
-2. Copy the new optimized version
-3. Update configuration (lines 58-64):
+### Шаг 2: Замените Код
+1. Сделайте резервную копию старого файла `CurtainsESP32.ino`
+2. Скопируйте новую оптимизированную версию
+3. Обновите конфигурацию (строки 58-64):
 
 ```cpp
-const char* WIFI_SSID = "Your SSID";           // Your saved ssid
-const char* WIFI_PASSWORD = "Your Password";    // Your saved password
-const char* MQTT_SERVER = "Your mqtt server";   // Your saved mqtt_server
+const char* WIFI_SSID = "Ваш SSID";           // Ваш сохранённый ssid
+const char* WIFI_PASSWORD = "Ваш Пароль";     // Ваш сохранённый пароль
+const char* MQTT_SERVER = "Ваш mqtt сервер";  // Ваш сохранённый mqtt_server
 ```
 
-### Step 3: Upload
+### Шаг 3: Загрузите
 ```bash
 platformio run --target upload
 ```
 
-### Step 4: Verify
-Open serial monitor (115200 baud):
+### Шаг 4: Проверьте
+Откройте Serial монитор (115200 baud):
 ```bash
 platformio device monitor
 ```
 
-You should see:
+Вы должны увидеть:
 ```
 ESP32 Curtain Controller Starting...
 Watchdog timer enabled
@@ -46,425 +46,425 @@ WiFi connected!
 Setup complete!
 ```
 
-### Step 5: Test
-Send an MQTT command and verify curtains move as expected.
+### Шаг 5: Тестирование
+Отправьте MQTT команду и убедитесь, что шторы двигаются как ожидается.
 
 ---
 
-## ⚙️ Configuration Changes
+## ⚙️ Изменения в Конфигурации
 
-### WiFi Settings
+### Настройки WiFi
 
-**Old:**
+**Старое:**
 ```cpp
-const char *ssid = "Your SSID";
-const char *password = "Your Password";
+const char *ssid = "Ваш SSID";
+const char *password = "Ваш Пароль";
 ```
 
-**New:**
+**Новое:**
 ```cpp
-const char* WIFI_SSID = "Your SSID";
-const char* WIFI_PASSWORD = "Your Password";
+const char* WIFI_SSID = "Ваш SSID";
+const char* WIFI_PASSWORD = "Ваш Пароль";
 ```
 
-**Migration**: Just copy your values to the new variable names.
+**Миграция**: Просто скопируйте значения в новые имена переменных.
 
 ---
 
-### MQTT Settings
+### Настройки MQTT
 
-**Old:**
+**Старое:**
 ```cpp
 const char *mqtt_server = "192.168.1.100";
-// Port was hardcoded to 1883
+// Порт был жёстко задан как 1883
 ```
 
-**New:**
+**Новое:**
 ```cpp
 const char* MQTT_SERVER = "192.168.1.100";
 const int MQTT_PORT = 1883;
 ```
 
-**Migration**: Copy your server address, port is now configurable.
+**Миграция**: Скопируйте адрес сервера, порт теперь настраиваемый.
 
 ---
 
-### MQTT Authentication (NEW!)
+### Аутентификация MQTT (НОВОЕ!)
 
-**Old:** Not supported
+**Старое:** Не поддерживалось
 
-**New:**
+**Новое:**
 ```cpp
-const char* MQTT_USER = "";  // Leave empty for no auth
-const char* MQTT_PASS = "";  // Leave empty for no auth
+const char* MQTT_USER = "";  // Оставьте пустым для отключения аутентификации
+const char* MQTT_PASS = "";  // Оставьте пустым для отключения аутентификации
 ```
 
-**Migration**: 
-- If your broker has no auth: Leave empty (default)
-- If your broker requires auth: Add username and password
+**Миграция**: 
+- Если ваш брокер без аутентификации: Оставьте пустым (по умолчанию)
+- Если ваш брокер требует аутентификацию: Добавьте имя пользователя и пароль
 
 ---
 
-## 📊 API Compatibility
+## 📊 Совместимость API
 
-### MQTT Topics (UNCHANGED)
-✅ All MQTT topics remain the same:
-- `/CURTAINS/ROLL1/` - Command topic for curtain 1
-- `/CURTAINS/ROLL2/` - Command topic for curtain 2
-- `/CURTAINS/ROLL1_step/` - Status topic for curtain 1
-- `/CURTAINS/ROLL2_step/` - Status topic for curtain 2
+### Топики MQTT (БЕЗ ИЗМЕНЕНИЙ)
+✅ Все MQTT топики остались прежними:
+- `/CURTAINS/ROLL1/` - Топик команд для шторы 1
+- `/CURTAINS/ROLL2/` - Топик команд для шторы 2
+- `/CURTAINS/ROLL1_step/` - Топик статуса для шторы 1
+- `/CURTAINS/ROLL2_step/` - Топик статуса для шторы 2
 
-**No changes needed to your automation scripts!**
-
----
-
-### Position Values (UNCHANGED)
-✅ Position values remain 0-550 (same scale)
-
-**Your existing MQTT commands will work without modification!**
+**Никаких изменений в ваших скриптах автоматизации не требуется!**
 
 ---
 
-### Pin Configuration (UNCHANGED)
-✅ All GPIO pins are the same:
+### Значения Позиций (БЕЗ ИЗМЕНЕНИЙ)
+✅ Значения позиций остались 0-550 (тот же масштаб)
 
-| Function | GPIO | Changed? |
-|----------|------|----------|
-| Stepper 1 Motor | 32, 25, 33, 26 | ✅ No |
-| Stepper 2 Motor | 23, 21, 22, 19 | ✅ No |
-| Switch 1 Upper | 17 | ✅ No |
-| Switch 1 Lower | 16 | ✅ No |
-| Switch 2 Upper | 14 | ✅ No |
-| Switch 2 Lower | 12 | ✅ No |
-
-**No hardware changes required!**
+**Ваши существующие MQTT команды будут работать без изменений!**
 
 ---
 
-## 🔧 Behavior Changes
+### Конфигурация Пинов (БЕЗ ИЗМЕНЕНИЙ)
+✅ Все GPIO пины те же:
 
-### 1. Serial Output (NEW)
+| Функция | GPIO | Изменено? |
+|---------|------|-----------|
+| Двигатель 1 | 32, 25, 33, 26 | ✅ Нет |
+| Двигатель 2 | 23, 21, 22, 19 | ✅ Нет |
+| Выключатель 1 Верхний | 17 | ✅ Нет |
+| Выключатель 1 Нижний | 16 | ✅ Нет |
+| Выключатель 2 Верхний | 14 | ✅ Нет |
+| Выключатель 2 Нижний | 12 | ✅ Нет |
 
-**Old:** No serial output
-
-**New:** Comprehensive debugging at 115200 baud
-
-**Impact:**
-- ✅ Easier troubleshooting
-- ⚠️ If you had serial communication on TX/RX, you may need to adjust
-- 💡 Can be disabled by removing `Serial.begin()` and all `Serial.print()` calls
-
----
-
-### 2. Watchdog Timer (NEW)
-
-**Old:** No watchdog
-
-**New:** 10-second watchdog timer
-
-**Impact:**
-- ✅ Auto-recovery from hangs
-- ⚠️ System will restart if loop takes > 10 seconds
-- 💡 Normal operation is < 100ms per loop, no issues expected
+**Изменения в оборудовании не требуются!**
 
 ---
 
-### 3. MQTT Reconnection (CHANGED)
+## 🔧 Изменения в Поведении
 
-**Old:** Blocks for 6 seconds per attempt, retries immediately
+### 1. Вывод через Serial (НОВОЕ)
 
-**New:** Non-blocking with exponential backoff (5s → 10s → 20s → 30s)
+**Старое:** Нет вывода через Serial
 
-**Impact:**
-- ✅ System stays responsive during connection issues
-- ✅ Reduced network load
-- ⚠️ May take longer to reconnect if broker is slow
-- 💡 Connection is more reliable overall
+**Новое:** Полная отладка на скорости 115200 baud
 
----
-
-### 4. WiFi Connection (CHANGED)
-
-**Old:** Infinite wait for WiFi
-
-**New:** 20-second timeout, then restart
-
-**Impact:**
-- ✅ Won't hang forever if WiFi is unavailable
-- ✅ Auto-recovery via restart
-- ⚠️ System will restart if WiFi takes > 20 seconds to connect
-- 💡 Adjust `WIFI_CONNECT_TIMEOUT_MS` if needed
+**Влияние:**
+- ✅ Более простая диагностика
+- ⚠️ Если у вас была Serial связь на TX/RX, может потребоваться корректировка
+- 💡 Можно отключить, удалив `Serial.begin()` и все `Serial.print()` вызовы
 
 ---
 
-### 5. Position Updates (IMPROVED)
+### 2. Сторожевой Таймер (НОВОЕ)
 
-**Old:** Published on every loop iteration (excessive)
+**Старое:** Нет сторожевого таймера
 
-**New:** Published only when position changes
+**Новое:** 10-секундный сторожевой таймер
 
-**Impact:**
-- ✅ Reduced MQTT traffic
-- ✅ Reduced network load
-- ✅ Same functionality, more efficient
-- 💡 No changes needed
+**Влияние:**
+- ✅ Автовосстановление при зависании
+- ⚠️ Система перезагрузится, если цикл занимает > 10 секунд
+- 💡 Обычная работа < 100мс на цикл, проблем не ожидается
 
 ---
 
-## 🐛 Bug Fixes
+### 3. Переподключение MQTT (ИЗМЕНЕНО)
 
-### Critical: Stepper 1 Position Tracking
+**Старое:** Блокировка на 6 секунд на попытку, немедленные повторы
 
-**Old Code (Line 141):**
+**Новое:** Неблокирующее с экспоненциальной задержкой (5с → 10с → 20с → 30с)
+
+**Влияние:**
+- ✅ Система остаётся отзывчивой при проблемах с подключением
+- ✅ Снижена нагрузка на сеть
+- ⚠️ Может занять больше времени для переподключения при медленном брокере
+- 💡 Подключение в целом более надёжное
+
+---
+
+### 4. Подключение WiFi (ИЗМЕНЕНО)
+
+**Старое:** Бесконечное ожидание WiFi
+
+**Новое:** 20-секундный таймаут, затем перезагрузка
+
+**Влияние:**
+- ✅ Не зависнет навсегда, если WiFi недоступен
+- ✅ Автовосстановление через перезагрузку
+- ⚠️ Система перезагрузится, если WiFi требует > 20 секунд для подключения
+- 💡 Настройте `WIFI_CONNECT_TIMEOUT_MS` при необходимости
+
+---
+
+### 5. Обновления Позиции (УЛУЧШЕНО)
+
+**Старое:** Публиковались на каждой итерации цикла (избыточно)
+
+**Новое:** Публикуются только при изменении позиции
+
+**Влияние:**
+- ✅ Снижен MQTT трафик
+- ✅ Снижена нагрузка на сеть
+- ✅ Та же функциональность, более эффективно
+- 💡 Изменения не требуются
+
+---
+
+## 🐛 Исправления Ошибок
+
+### Критическое: Отслеживание Позиции Двигателя 1
+
+**Старый Код (Строка 141):**
 ```cpp
 void checkStep1 (void) {
   if (CurtHyster1 == true) {
-    // BUG: Used steps_from_zero2 instead of steps_from_zero1
+    // ОШИБКА: Используется steps_from_zero2 вместо steps_from_zero1
     if (((steps_from_zero2 > STOPHYSTERESIS) && 
          (steps_from_zero2 < CURTMAXIMUM - STOPHYSTERESIS)) ||
 ```
 
-**Impact:** Stepper 1's hysteresis was reading Stepper 2's position!
+**Влияние:** Гистерезис двигателя 1 читал позицию двигателя 2!
 
-**New Code:** Fixed and unified into single function
+**Новый Код:** Исправлено и объединено в одну функцию
 
-**Migration:** Stepper 1 will now work correctly!
-
----
-
-## 🎯 Feature Additions
-
-### 1. Input Validation (NEW)
-- Validates MQTT payload length
-- Validates position range
-- Prevents buffer overflows
-
-**Migration:** No changes needed, better safety automatically
+**Миграция:** Двигатель 1 теперь будет работать корректно!
 
 ---
 
-### 2. Error Logging (NEW)
-- Comprehensive serial output
-- Connection status reporting
-- Error messages
+## 🎯 Добавленные Возможности
 
-**Migration:** Connect serial monitor to see what's happening
+### 1. Валидация Ввода (НОВОЕ)
+- Валидирует длину MQTT payload
+- Валидирует диапазон позиции
+- Предотвращает переполнение буфера
 
----
-
-### 3. WiFi Auto-Recovery (NEW)
-- Monitors WiFi status in main loop
-- Auto-reconnects if disconnected
-
-**Migration:** Better reliability, no changes needed
+**Миграция:** Изменения не требуются, безопасность улучшена автоматически
 
 ---
 
-### 4. MQTT Status Feedback (NEW)
-- Reports connection success/failure
-- Shows subscription confirmations
-- Displays retry attempts
+### 2. Логирование Ошибок (НОВОЕ)
+- Полный вывод через Serial
+- Отчёт о статусе подключения
+- Сообщения об ошибках
 
-**Migration:** No changes needed, better visibility
-
----
-
-## 📝 Constants Renamed
-
-| Old Name | New Name | Value | Changed? |
-|----------|----------|-------|----------|
-| `CURTMAXIMUM` | `CURTAIN_MAXIMUM` | 550 | Name only |
-| `STOPHYSTERESIS` | `STOP_HYSTERESIS` | 5 | Name only |
-| `MSG_BUFFER_SIZE` | `MSG_BUFFER_SIZE` | 20 | ✅ No |
-| N/A | `POSITION_SCALE` | 100 | New constant |
-
-**Migration:** If you reference these in custom code, update names
+**Миграция:** Подключите Serial монитор, чтобы видеть что происходит
 
 ---
 
-## 🔍 Troubleshooting Migration
+### 3. Автовосстановление WiFi (НОВОЕ)
+- Мониторит статус WiFi в главном цикле
+- Автоматически переподключается при отключении
 
-### Issue: Code Won't Compile
+**Миграция:** Лучшая надёжность, изменения не требуются
 
-**Solution:**
-1. Check PlatformIO is up to date
-2. Verify library dependencies in `platformio.ini`:
+---
+
+### 4. Обратная Связь Статуса MQTT (НОВОЕ)
+- Сообщает об успехе/провале подключения
+- Показывает подтверждения подписки
+- Отображает попытки повторного подключения
+
+**Миграция:** Изменения не требуются, лучшая видимость
+
+---
+
+## 📝 Переименованные Константы
+
+| Старое Имя | Новое Имя | Значение | Изменено? |
+|------------|-----------|----------|-----------|
+| `CURTMAXIMUM` | `CURTAIN_MAXIMUM` | 550 | Только имя |
+| `STOPHYSTERESIS` | `STOP_HYSTERESIS` | 5 | Только имя |
+| `MSG_BUFFER_SIZE` | `MSG_BUFFER_SIZE` | 20 | ✅ Нет |
+| N/A | `POSITION_SCALE` | 100 | Новая константа |
+
+**Миграция:** Если вы ссылаетесь на них в пользовательском коде, обновите имена
+
+---
+
+## 🔍 Устранение Неполадок при Миграции
+
+### Проблема: Код Не Компилируется
+
+**Решение:**
+1. Проверьте, что PlatformIO обновлён
+2. Проверьте зависимости библиотек в `platformio.ini`:
    - `PubSubClient @ ^2.8`
    - `AccelStepper @ ^1.61`
-3. Clean build: `platformio run --target clean`
+3. Очистите сборку: `platformio run --target clean`
 
 ---
 
-### Issue: Serial Monitor Shows Nothing
+### Проблема: Serial Монитор Ничего Не Показывает
 
-**Solution:**
-1. Set baud rate to **115200** (was unspecified before)
-2. Connect before powering on to see startup messages
-
----
-
-### Issue: "esp_task_wdt.h not found"
-
-**Solution:**
-- This is ESP32 core library, should be automatic
-- Update platform: `platformio platform update espressif32`
-- Check `platformio.ini` has `platform = espressif32`
+**Решение:**
+1. Установите скорость передачи **115200** (была не указана ранее)
+2. Подключитесь до включения питания, чтобы увидеть стартовые сообщения
 
 ---
 
-### Issue: WiFi Won't Connect
+### Проблема: "esp_task_wdt.h not found"
 
-**Solution:**
-1. Check SSID/password are correct
-2. Ensure 2.4GHz network (ESP32 doesn't support 5GHz)
-3. Wait for serial output showing error
-4. System will auto-restart after 20 seconds
-
----
-
-### Issue: MQTT Connection Fails
-
-**Solution:**
-1. Verify broker IP address
-2. Check broker is running
-3. If using auth, set `MQTT_USER` and `MQTT_PASS`
-4. Serial monitor will show error code (e.g., `rc=-2`)
+**Решение:**
+- Это библиотека ядра ESP32, должна быть автоматически
+- Обновите платформу: `platformio platform update espressif32`
+- Проверьте, что в `platformio.ini` есть `platform = espressif32`
 
 ---
 
-### Issue: Curtains Move Differently
+### Проблема: WiFi Не Подключается
 
-**Solution:**
-1. Check limit switches are properly connected
-2. Verify stepper motor wiring unchanged
-3. Position scale is same (×100), commands should be identical
-4. Watch serial monitor for position updates
-
----
-
-### Issue: System Keeps Restarting
-
-**Solution:**
-1. Check power supply is stable (2A minimum)
-2. Verify watchdog isn't triggering (should see "Watchdog timer enabled" only once)
-3. If restarting during WiFi connection, check WiFi signal strength
-4. Look at last serial message before restart
+**Решение:**
+1. Проверьте правильность SSID/пароля
+2. Убедитесь, что это сеть 2.4ГГц (ESP32 не поддерживает 5ГГц)
+3. Дождитесь вывода Serial, показывающего ошибку
+4. Система автоматически перезагрузится через 20 секунд
 
 ---
 
-## 📊 Performance Comparison
+### Проблема: Сбой Подключения MQTT
 
-| Metric | Old | New | Better? |
-|--------|-----|-----|---------|
-| **Loop Response** | 1-7+ seconds | < 100ms | ✅ 70× faster |
-| **MQTT Reconnect** | Blocks 6+ seconds | Non-blocking | ✅ ∞× better |
-| **Code Duplication** | 140 lines | 0 lines | ✅ 100% better |
-| **Memory Usage** | Baseline | -10% globals | ✅ More efficient |
-| **Reliability** | Basic | Production | ✅ Much better |
+**Решение:**
+1. Проверьте IP адрес брокера
+2. Проверьте, работает ли брокер
+3. Если используется аутентификация, установите `MQTT_USER` и `MQTT_PASS`
+4. Serial монитор покажет код ошибки (например, `rc=-2`)
 
 ---
 
-## 🎓 Learning the New Code
+### Проблема: Шторы Двигаются По-Другому
 
-### Old Function Names → New Function Names
-
-| Old | New | Notes |
-|-----|-----|-------|
-| `checkStep1()` | `processStepperController(controllers[0])` | Unified function |
-| `checkStep2()` | `processStepperController(controllers[1])` | Same function |
-| `reconnect()` | `reconnect()` | Same name, different behavior |
-| `setup_wifi()` | `setup_wifi()` | Same name, enhanced |
+**Решение:**
+1. Проверьте правильность подключения концевых выключателей
+2. Проверьте, что проводка шаговых двигателей не изменилась
+3. Масштаб позиции тот же (×100), команды должны быть идентичными
+4. Следите за Serial монитором для обновлений позиции
 
 ---
 
-### New Concepts
+### Проблема: Система Постоянно Перезагружается
 
-#### 1. StepperController Structure
+**Решение:**
+1. Проверьте стабильность блока питания (минимум 2А)
+2. Убедитесь, что сторожевой таймер не срабатывает (должно быть "Watchdog timer enabled" только один раз)
+3. Если перезагружается во время подключения WiFi, проверьте силу сигнала WiFi
+4. Посмотрите на последнее Serial сообщение перед перезагрузкой
+
+---
+
+## 📊 Сравнение Производительности
+
+| Метрика | Старое | Новое | Лучше? |
+|---------|--------|-------|--------|
+| **Отклик Цикла** | 1-7+ секунд | < 100мс | ✅ В 70× быстрее |
+| **Переподключение MQTT** | Блокирует 6+ секунд | Неблокирующее | ✅ ∞× лучше |
+| **Дублирование Кода** | 140 строк | 0 строк | ✅ На 100% лучше |
+| **Использование Памяти** | Базовое | -10% глобальных | ✅ Эффективнее |
+| **Надёжность** | Базовая | Промышленная | ✅ Намного лучше |
+
+---
+
+## 🎓 Изучение Нового Кода
+
+### Старые Имена Функций → Новые Имена Функций
+
+| Старое | Новое | Примечания |
+|--------|-------|------------|
+| `checkStep1()` | `processStepperController(controllers[0])` | Унифицированная функция |
+| `checkStep2()` | `processStepperController(controllers[1])` | Та же функция |
+| `reconnect()` | `reconnect()` | То же имя, другое поведение |
+| `setup_wifi()` | `setup_wifi()` | То же имя, улучшенная |
+
+---
+
+### Новые Концепции
+
+#### 1. Структура StepperController
 ```cpp
 StepperController controllers[2] = {
   {&stepper1, 0, 0, false, SWITCH_1_PIN, SWITCH_2_PIN, PUB_STEPS1},
   {&stepper2, 0, 0, false, SWITCH_3_PIN, SWITCH_4_PIN, PUB_STEPS2}
 };
 ```
-**Why:** Groups related data, eliminates code duplication
+**Зачем:** Группирует связанные данные, устраняет дублирование кода
 
-#### 2. Non-blocking Reconnection
+#### 2. Неблокирующее Переподключение
 ```cpp
 if (!client.connected()) {
-  reconnect();  // Returns immediately if not ready
+  reconnect();  // Возвращается немедленно, если не готово
 }
 ```
-**Why:** Keeps system responsive
+**Зачем:** Сохраняет отзывчивость системы
 
-#### 3. Watchdog Timer
+#### 3. Сторожевой Таймер
 ```cpp
-esp_task_wdt_reset();  // Call in loop to prevent restart
+esp_task_wdt_reset();  // Вызывайте в цикле для предотвращения перезагрузки
 ```
-**Why:** Auto-recovery from crashes
+**Зачем:** Автовосстановление при сбоях
 
 ---
 
-## 📋 Migration Checklist
+## 📋 Чеклист Миграции
 
-- [ ] **Backup** old code and configuration
-- [ ] **Copy** WiFi credentials to new code
-- [ ] **Copy** MQTT server address to new code
-- [ ] **Add** MQTT auth credentials if needed (new feature)
-- [ ] **Upload** new code to ESP32
-- [ ] **Connect** serial monitor at 115200 baud
-- [ ] **Verify** WiFi connection (check serial output)
-- [ ] **Verify** MQTT connection (check serial output)
-- [ ] **Test** curtain 1 with MQTT command
-- [ ] **Test** curtain 2 with MQTT command
-- [ ] **Test** limit switches on both curtains
-- [ ] **Verify** position updates are published
-- [ ] **Test** reconnection (disconnect WiFi, reconnect)
-- [ ] **Update** documentation if you have custom changes
+- [ ] **Резервная копия** старого кода и конфигурации
+- [ ] **Копировать** учётные данные WiFi в новый код
+- [ ] **Копировать** адрес MQTT сервера в новый код
+- [ ] **Добавить** учётные данные MQTT аутентификации, если нужно (новая функция)
+- [ ] **Загрузить** новый код на ESP32
+- [ ] **Подключить** Serial монитор на скорости 115200 baud
+- [ ] **Проверить** подключение WiFi (проверьте вывод Serial)
+- [ ] **Проверить** подключение MQTT (проверьте вывод Serial)
+- [ ] **Тест** шторы 1 с MQTT командой
+- [ ] **Тест** шторы 2 с MQTT командой
+- [ ] **Тест** концевые выключатели на обеих шторах
+- [ ] **Проверить** публикацию обновлений позиции
+- [ ] **Тест** переподключение (отключите WiFi, переподключите)
+- [ ] **Обновить** документацию, если у вас есть пользовательские изменения
 
 ---
 
-## 🆘 Rollback Procedure
+## 🆘 Процедура Отката
 
-If you need to revert to the old version:
+Если вам нужно вернуться к старой версии:
 
-1. **Restore backup:**
+1. **Восстановить резервную копию:**
    ```bash
    cp CurtainsESP32.ino.backup src/CurtainsESP32.ino
    ```
 
-2. **Upload old version:**
+2. **Загрузить старую версию:**
    ```bash
    platformio run --target upload
    ```
 
-3. **Report issue:**
-   - What went wrong?
-   - Serial output logs
-   - Hardware configuration
+3. **Сообщить о проблеме:**
+   - Что пошло не так?
+   - Логи вывода Serial
+   - Конфигурация оборудования
 
 ---
 
-## 🎉 Migration Complete!
+## 🎉 Миграция Завершена!
 
-After successful migration, you'll have:
+После успешной миграции у вас будет:
 
-✅ **Same functionality** - All features work as before  
-✅ **Better reliability** - Watchdog, validation, error handling  
-✅ **More visibility** - Serial debugging shows what's happening  
-✅ **Easier maintenance** - Cleaner, more organized code  
-✅ **Future-proof** - Easy to extend and customize  
+✅ **Та же функциональность** - Все функции работают как раньше  
+✅ **Лучшая надёжность** - Сторожевой таймер, валидация, обработка ошибок  
+✅ **Больше видимости** - Отладка через Serial показывает что происходит  
+✅ **Более простое обслуживание** - Чище, более организованный код  
+✅ **Готово к будущему** - Легко расширять и настраивать  
 
-**Welcome to the optimized version! 🚀**
-
----
-
-## 📞 Need Help?
-
-1. Check serial monitor output (115200 baud)
-2. Review [`QUICK_START.md`](QUICK_START.md) for setup guide
-3. Read [`OPTIMIZATION_NOTES.md`](OPTIMIZATION_NOTES.md) for technical details
-4. See [`COMPARISON.md`](COMPARISON.md) for before/after comparison
+**Добро пожаловать в оптимизированную версию! 🚀**
 
 ---
 
-**Migration prepared: 2025-10-20**
+## 📞 Нужна Помощь?
+
+1. Проверьте вывод Serial монитора (115200 baud)
+2. Просмотрите [`QUICK_START_RU.md`](QUICK_START_RU.md) для руководства по настройке
+3. Прочитайте [`OPTIMIZATION_NOTES_RU.md`](OPTIMIZATION_NOTES_RU.md) для технических деталей
+4. См. [`COMPARISON_RU.md`](COMPARISON_RU.md) для сравнения до/после
+
+---
+
+**Миграция подготовлена: 2025-10-20**

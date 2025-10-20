@@ -1,65 +1,65 @@
-# Web Interface for ESP32 Curtain Controller
+# Веб-Интерфейс для Контроллера Штор ESP32
 
-## Overview
+## Обзор
 
-The ESP32 Curtain Controller now includes a built-in web interface that allows you to control your curtains directly from any web browser - no MQTT broker required!
+Контроллер штор ESP32 теперь включает встроенный веб-интерфейс, который позволяет управлять шторами напрямую из любого браузера - MQTT брокер не требуется!
 
-## Features
+## Возможности
 
-- 🎨 **Modern, Responsive UI** - Works on desktop, tablet, and mobile devices
-- 🎚️ **Interactive Sliders** - Drag to set any position from 0-550
-- 🔘 **Quick Action Buttons** - Open, Half, Close, and Stop
-- 📊 **Real-time Position Display** - See current curtain positions
-- 🔄 **Auto-refresh Status** - Updates every 2 seconds
-- 🌐 **mDNS Support** - Access via http://curtains.local
-- 🚀 **No External Dependencies** - Everything runs on ESP32
+- 🎨 **Современный, Адаптивный UI** - Работает на компьютере, планшете и мобильном
+- 🎚️ **Интерактивные Слайдеры** - Перетаскивайте для установки любой позиции 0-550
+- 🔘 **Кнопки Быстрого Действия** - Открыть, Наполовину, Закрыть и Стоп
+- 📊 **Отображение Позиции в Реальном Времени** - Видите текущие позиции штор
+- 🔄 **Автообновление Статуса** - Обновляется каждые 2 секунды
+- 🌐 **Поддержка mDNS** - Доступ через http://curtains.local
+- 🚀 **Без Внешних Зависимостей** - Всё работает на ESP32
 
-## Access Methods
+## Способы Доступа
 
-### 1. Direct IP Address
-After connecting to WiFi, the ESP32 will print its IP address to Serial monitor:
+### 1. Прямой IP Адрес
+После подключения к WiFi, ESP32 выведет свой IP адрес в Serial монитор:
 ```
 WiFi connected!
 IP address: 192.168.1.100
 Web interface available at: http://192.168.1.100
 ```
 
-Open your browser and navigate to: **http://192.168.1.100**
+Откройте браузер и перейдите на: **http://192.168.1.100**
 
-### 2. mDNS Hostname (Easier!)
-If your device supports mDNS (most modern devices do):
+### 2. mDNS Имя Хоста (Проще!)
+Если ваше устройство поддерживает mDNS (большинство современных устройств поддерживают):
 
 **http://curtains.local**
 
-## Interface Layout
+## Планировка Интерфейса
 
-### Status Bar
-- Shows connection status (Connected/Disconnected)
-- Updates in real-time
+### Строка Статуса
+- Показывает статус подключения (Connected/Disconnected)
+- Обновляется в реальном времени
 
-### Curtain Cards (2x)
-Each curtain has its own control card with:
+### Карточки Штор (2шт)
+Каждая штора имеет свою карточку управления с:
 
-1. **Position Display** - Large number showing current position (0-550)
-2. **Interactive Slider** - Drag to set any position
-3. **Quick Buttons**:
-   - **Open** - Moves curtain to position 0 (fully open)
-   - **Half** - Moves curtain to position 275 (50% open)
-   - **Close** - Moves curtain to position 550 (fully closed)
-   - **Stop** - Immediately stops curtain movement
+1. **Отображение Позиции** - Большое число, показывающее текущую позицию (0-550)
+2. **Интерактивный Слайдер** - Перетащите для установки любой позиции
+3. **Быстрые Кнопки**:
+   - **Open** - Перемещает штору в позицию 0 (полностью открыто)
+   - **Half** - Перемещает штору в позицию 275 (50% открыто)
+   - **Close** - Перемещает штору в позицию 550 (полностью закрыто)
+   - **Stop** - Немедленно останавливает движение шторы
 
-### Footer
-- Displays ESP32 IP address
+### Подвал
+- Отображает IP адрес ESP32
 
 ## API Endpoints
 
-The web interface uses these REST API endpoints:
+Веб-интерфейс использует эти REST API endpoints:
 
 ### GET `/`
-Returns the HTML interface
+Возвращает HTML интерфейс
 
 ### GET `/status`
-Returns current system status as JSON:
+Возвращает текущий статус системы в JSON:
 ```json
 {
   "position1": 275,
@@ -69,59 +69,59 @@ Returns current system status as JSON:
 ```
 
 ### GET `/set?curtain=X&position=Y`
-Sets curtain position
-- **curtain**: 1 or 2
+Устанавливает позицию шторы
+- **curtain**: 1 или 2
 - **position**: 0-550
 
-**Response:**
+**Ответ:**
 ```json
 {"status": "ok"}
 ```
 
 ### GET `/stop?curtain=X`
-Stops curtain immediately
-- **curtain**: 1 or 2
+Немедленно останавливает штору
+- **curtain**: 1 или 2
 
-**Response:**
+**Ответ:**
 ```json
 {"status": "ok"}
 ```
 
-## Usage Examples
+## Примеры Использования
 
-### Control from Browser
-1. Open http://curtains.local or http://YOUR_ESP32_IP
-2. Use sliders or buttons to control curtains
-3. Watch real-time position updates
+### Управление из Браузера
+1. Откройте http://curtains.local или http://IP_ВАШЕГО_ESP32
+2. Используйте слайдеры или кнопки для управления шторами
+3. Наблюдайте обновления позиции в реальном времени
 
-### Control via Command Line
+### Управление через Командную Строку
 
-**Using curl:**
+**Используя curl:**
 ```bash
-# Set curtain 1 to position 300
+# Установить штору 1 в позицию 300
 curl "http://curtains.local/set?curtain=1&position=300"
 
-# Open curtain 2
+# Открыть штору 2
 curl "http://curtains.local/set?curtain=2&position=0"
 
-# Close curtain 1
+# Закрыть штору 1
 curl "http://curtains.local/set?curtain=1&position=550"
 
-# Stop curtain 2
+# Остановить штору 2
 curl "http://curtains.local/stop?curtain=2"
 
-# Get status
+# Получить статус
 curl "http://curtains.local/status"
 ```
 
-**Using wget:**
+**Используя wget:**
 ```bash
 wget -qO- "http://curtains.local/set?curtain=1&position=275"
 ```
 
-### Integration with Scripts
+### Интеграция со Скриптами
 
-**Python Example:**
+**Пример на Python:**
 ```python
 import requests
 
@@ -134,16 +134,16 @@ def get_status():
     response = requests.get("http://curtains.local/status")
     return response.json()
 
-# Open curtain 1
+# Открыть штору 1
 set_curtain(1, 0)
 
-# Get positions
+# Получить позиции
 status = get_status()
-print(f"Curtain 1: {status['position1']}")
-print(f"Curtain 2: {status['position2']}")
+print(f"Штора 1: {status['position1']}")
+print(f"Штора 2: {status['position2']}")
 ```
 
-**Node.js Example:**
+**Пример на Node.js:**
 ```javascript
 const axios = require('axios');
 
@@ -158,17 +158,17 @@ async function getStatus() {
     return response.data;
 }
 
-// Close curtain 2
+// Закрыть штору 2
 setCurtain(2, 550);
 ```
 
-## Home Automation Integration
+## Интеграция с Домашней Автоматизацией
 
 ### Home Assistant REST Sensor
 ```yaml
 sensor:
   - platform: rest
-    name: "Curtain 1 Position"
+    name: "Позиция Шторы 1"
     resource: "http://curtains.local/status"
     value_template: "{{ value_json.position1 }}"
     scan_interval: 5
@@ -177,7 +177,7 @@ cover:
   - platform: template
     covers:
       curtain_1:
-        friendly_name: "Living Room Curtain"
+        friendly_name: "Штора в гостиной"
         position_template: "{{ (states('sensor.curtain_1_position') | int / 5.5) | int }}"
         open_cover:
           service: rest_command.curtain_open
@@ -209,165 +209,165 @@ rest_command:
 ]
 ```
 
-## Mobile Access
+## Мобильный Доступ
 
-### Create Home Screen Shortcut
+### Создание Ярлыка на Домашнем Экране
 
 **iOS (Safari):**
-1. Open http://curtains.local in Safari
-2. Tap the Share button
-3. Scroll down and tap "Add to Home Screen"
-4. Name it "Curtains" and tap Add
+1. Откройте http://curtains.local в Safari
+2. Нажмите кнопку Поделиться
+3. Прокрутите вниз и нажмите "Добавить на домашний экран"
+4. Назовите "Шторы" и нажмите Добавить
 
 **Android (Chrome):**
-1. Open http://curtains.local in Chrome
-2. Tap the three-dot menu
-3. Tap "Add to Home screen"
-4. Name it "Curtains" and tap Add
+1. Откройте http://curtains.local в Chrome
+2. Нажмите меню с тремя точками
+3. Нажмите "Добавить на главный экран"
+4. Назовите "Шторы" и нажмите Добавить
 
-Now you have a native-looking app icon to control your curtains!
+Теперь у вас есть иконка приложения для управления шторами!
 
-## Customization
+## Настройка
 
-### Change mDNS Hostname
-Edit in `CurtainsESP32.ino`:
+### Изменить mDNS Имя Хоста
+Отредактируйте в `CurtainsESP32.ino`:
 ```cpp
-#define MDNS_HOSTNAME "curtains"  // Change to your preferred name
+#define MDNS_HOSTNAME "curtains"  // Измените на желаемое имя
 ```
-Access will be: http://YOUR_NAME.local
+Доступ будет: http://ВАШЕ_ИМЯ.local
 
-### Change Web Server Port
+### Изменить Порт Веб-Сервера
 ```cpp
-#define WEB_SERVER_PORT 80  // Change to different port (e.g., 8080)
+#define WEB_SERVER_PORT 80  // Измените на другой порт (например, 8080)
 ```
 
-### Modify Interface Colors
-The HTML interface is embedded in the code. Search for the `<style>` section to customize:
-- `background: linear-gradient(...)` - Change gradient colors
-- `.btn-open { background: #28a745; }` - Change button colors
-- `.slider::-webkit-slider-thumb { background: #667eea; }` - Change slider color
+### Изменить Цвета Интерфейса
+HTML интерфейс встроен в код. Найдите секцию `<style>` для настройки:
+- `background: linear-gradient(...)` - Изменить цвета градиента
+- `.btn-open { background: #28a745; }` - Изменить цвета кнопок
+- `.slider::-webkit-slider-thumb { background: #667eea; }` - Изменить цвет слайдера
 
-## Performance
+## Производительность
 
-- **Response Time**: < 100ms typical
-- **Concurrent Connections**: Up to 4 simultaneous users
-- **Memory Usage**: ~50KB additional flash, ~5KB RAM
-- **CPU Impact**: Minimal, web requests handled between stepper steps
+- **Время Отклика**: < 100мс обычно
+- **Одновременные Подключения**: До 4 пользователей одновременно
+- **Использование Памяти**: ~50КБ дополнительной flash, ~5КБ RAM
+- **Нагрузка на CPU**: Минимальная, веб-запросы обрабатываются между шагами двигателя
 
-## Security Considerations
+## Соображения Безопасности
 
-⚠️ **Important**: The web interface has NO authentication by default!
+⚠️ **Важно**: Веб-интерфейс НЕ имеет аутентификации по умолчанию!
 
-### Recommendations:
+### Рекомендации:
 
-1. **Use on Private Network Only** - Don't expose to internet
-2. **Consider VPN** - Access remotely via VPN instead of port forwarding
-3. **Add Basic Auth** (Optional) - Can be implemented if needed
+1. **Используйте Только в Частной Сети** - Не выставляйте в интернет
+2. **Рассмотрите VPN** - Удалённый доступ через VPN вместо проброса портов
+3. **Добавьте Basic Auth** (Опционально) - Может быть реализовано при необходимости
 
-### Adding Basic Authentication (Advanced)
-If you need password protection, you can add this to the web server handlers:
+### Добавление Базовой Аутентификации (Продвинутое)
+Если нужна защита паролем, добавьте в обработчики веб-сервера:
 
 ```cpp
-if (!server.authenticate("admin", "yourpassword")) {
+if (!server.authenticate("admin", "вашпароль")) {
     return server.requestAuthentication();
 }
 ```
 
-## Troubleshooting
+## Устранение Неполадок
 
-### Can't Access Web Interface
+### Не Могу Получить Доступ к Веб-Интерфейсу
 
-**Check WiFi Connection:**
+**Проверьте Подключение WiFi:**
 ```
-Serial monitor should show:
+Serial монитор должен показывать:
 WiFi connected!
 IP address: 192.168.1.XXX
 ```
 
-**Check Firewall:**
-- Ensure port 80 is not blocked
-- Try from same subnet first
+**Проверьте Брандмауэр:**
+- Убедитесь, что порт 80 не заблокирован
+- Сначала попробуйте из той же подсети
 
-**Check mDNS:**
-- mDNS may not work on all networks
-- Try direct IP address instead
+**Проверьте mDNS:**
+- mDNS может не работать во всех сетях
+- Попробуйте прямой IP адрес вместо этого
 
-**Clear Browser Cache:**
-- Hard refresh: Ctrl+F5 (Windows) or Cmd+Shift+R (Mac)
+**Очистите Кэш Браузера:**
+- Жёсткое обновление: Ctrl+F5 (Windows) или Cmd+Shift+R (Mac)
 
-### Interface Shows "Disconnected"
+### Интерфейс Показывает "Disconnected"
 
-- Check ESP32 is powered on
-- Check network connection
-- Check Serial monitor for errors
-- Try direct IP instead of mDNS
+- Проверьте, что ESP32 включён
+- Проверьте сетевое подключение
+- Проверьте Serial монитор на ошибки
+- Попробуйте прямой IP вместо mDNS
 
-### Curtains Don't Move
+### Шторы Не Двигаются
 
-- Check MQTT connection (if using)
-- Check Serial monitor for error messages
-- Verify limit switches aren't triggered
-- Try MQTT commands to verify motors work
+- Проверьте подключение MQTT (если используется)
+- Проверьте Serial монитор на сообщения об ошибках
+- Проверьте, не сработали ли концевые выключатели
+- Попробуйте MQTT команды для проверки работы двигателей
 
-### Slow Response
+### Медленный Отклик
 
-- Check WiFi signal strength
-- Reduce status update interval in JavaScript
-- Check for network congestion
+- Проверьте силу сигнала WiFi
+- Уменьшите интервал обновления статуса в JavaScript
+- Проверьте загруженность сети
 
-## Comparison: Web vs MQTT
+## Сравнение: Web vs MQTT
 
-| Feature | Web Interface | MQTT |
+| Функция | Веб-Интерфейс | MQTT |
 |---------|---------------|------|
-| **Setup** | None needed | Requires broker |
-| **Access** | Browser | MQTT client |
-| **Mobile** | Yes | App needed |
-| **Automation** | REST API | Pub/Sub |
-| **Real-time** | Polling (2s) | Push |
-| **Offline** | No | Yes (retained) |
-| **Security** | None by default | Can be encrypted |
+| **Настройка** | Не требуется | Требуется брокер |
+| **Доступ** | Браузер | MQTT клиент |
+| **Мобильный** | Да | Нужно приложение |
+| **Автоматизация** | REST API | Pub/Sub |
+| **Реальное время** | Опрос (2с) | Push |
+| **Оффлайн** | Нет | Да (retained) |
+| **Безопасность** | Нет по умолчанию | Может быть зашифровано |
 
-**Best Practice**: Use both!
-- Web interface for manual control
-- MQTT for automation and integration
+**Лучшая Практика**: Используйте оба!
+- Веб-интерфейс для ручного управления
+- MQTT для автоматизации и интеграции
 
-## Technical Details
+## Технические Детали
 
-### Memory Layout
-- HTML/CSS/JS: ~15KB (stored in PROGMEM/Flash)
-- Runtime RAM: ~5KB
-- Web server stack: ~4KB
+### Распределение Памяти
+- HTML/CSS/JS: ~15КБ (хранится в PROGMEM/Flash)
+- Runtime RAM: ~5КБ
+- Web server stack: ~4КБ
 
-### Web Server Library
-- Uses ESP32 WebServer (built-in)
-- Single-threaded, non-blocking
-- Handles one request at a time
+### Библиотека Веб-Сервера
+- Использует ESP32 WebServer (встроенный)
+- Однопоточный, неблокирующий
+- Обрабатывает один запрос за раз
 
-### Update Mechanism
-- Position updates via polling (AJAX)
-- 2-second interval by default
-- Can be changed in JavaScript
+### Механизм Обновления
+- Обновления позиции через опрос (AJAX)
+- Интервал 2 секунды по умолчанию
+- Можно изменить в JavaScript
 
-## Future Enhancements
+## Будущие Улучшения
 
-Potential improvements for future versions:
+Потенциальные улучшения для будущих версий:
 
-- [ ] WebSocket for real-time updates (no polling)
-- [ ] PWA (Progressive Web App) support
-- [ ] Dark mode toggle
-- [ ] Schedule/timer functionality
-- [ ] Authentication system
-- [ ] Settings page
-- [ ] OTA firmware updates via web
-- [ ] Multiple language support
-- [ ] Chart of position history
+- [ ] WebSocket для обновлений в реальном времени (без опроса)
+- [ ] Поддержка PWA (Progressive Web App)
+- [ ] Переключатель тёмной темы
+- [ ] Функциональность расписания/таймера
+- [ ] Система аутентификации
+- [ ] Страница настроек
+- [ ] OTA обновления прошивки через веб
+- [ ] Поддержка нескольких языков
+- [ ] График истории позиций
 
-## Credits
+## Авторы
 
-Web interface designed with modern CSS3 and vanilla JavaScript. No external frameworks required!
+Веб-интерфейс разработан с современным CSS3 и vanilla JavaScript. Внешние фреймворки не требуются!
 
 ---
 
-**Enjoy your new web interface! 🎉**
+**Наслаждайтесь новым веб-интерфейсом! 🎉**
 
-For issues or suggestions, please open a GitHub issue.
+По вопросам или предложениям, пожалуйста, откройте issue на GitHub.
