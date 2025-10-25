@@ -536,14 +536,14 @@ Serial.print("Subscribed to: ");
 reconnectDelay = MQTT_RECONNECT_DELAY_MS;
     return true
   } else {
-    Serial.print("failed, rc=")
-    Serial.println(client.state())
-
-    reconnectDelay = min(reconnectDelay * 2, (uint32_t)MQTT_RECONNECT_MAX_DELAY_MS)
-    Serial.print("Next retry in: ")
-    Serial.print(reconnectDelay / 1000)
-    Serial.println("s")
-    return false
+    Serial.print("failed, rc=");
+    Serial.println(client.state());
+    
+    reconnectDelay = min(reconnectDelay * 2, (uint32_t)MQTT_RECONNECT_MAX_DELAY_MS);
+    Serial.print("Next retry in: ");
+    Serial.print(reconnectDelay / 1000);
+    Serial.println("s");
+    return false;
   }
 }
 
