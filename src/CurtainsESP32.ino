@@ -476,9 +476,8 @@ void callback(char* topic, byte* payload, unsigned int length) {
     msgBuffer[i] = (char)payload[i];
   }
   msgBuffer[length] = '\0';
-}
   
-// Parse position value
+  // Parse position value
   float position = atof(msgBuffer);
   int32_t targetSteps = (int32_t)(position * positionScale);
   
