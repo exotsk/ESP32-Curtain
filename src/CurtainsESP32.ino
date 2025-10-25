@@ -581,12 +581,12 @@ Serial.println(position);
 }
 
 void handleStop() {
-if (server.hasArg("curtain")) {
-    intcurtain = server.arg("curtain").toInt();
-if (curtain< 1|| curtain > 2){
-server.send(400,"application/json", "{\"status\":\"error\",\"message\":\"Invalid curtain\"}");
+  if (server.hasArg("curtain")) {
+    int curtain = server.arg("curtain").toInt();
+    if (curtain < 1 || curtain > 2) {
+      server.send(400, "application/json", "{\"status\":\"error\",\"message\":\"Invalid curtain\"}");
       return;
-   }
+    }
     
     // Stop thecurtain
     controllers[curtain- 1].stepper->stop();
