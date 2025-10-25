@@ -693,15 +693,15 @@ Serial.println("Loading settings from NVS");
   }
   
   // Configure limit switches
-  pinMode(SWITCH_1_PIN, INPUT_PULLUP)
-  pinMode(SWITCH_2_PIN, INPUT_PULLUP)
-  pinMode(SWITCH_3_PIN, INPUT_PULLUP)
-  pinMode(SWITCH_4_PIN, INPUT_PULLUP)
-  Serial.println("Limit switches configured")
+  pinMode(SWITCH_1_PIN, INPUT_PULLUP);
+  pinMode(SWITCH_2_PIN, INPUT_PULLUP);
+  pinMode(SWITCH_3_PIN, INPUT_PULLUP);
+  pinMode(SWITCH_4_PIN, INPUT_PULLUP);
+  Serial.println("Limit switches configured");
   
-  // Print WiFi settingsfor debugging
-  Serial.print("Attempting to connect to SSID: ")
-  Serial.println(wifiSsid)
+  // Print WiFi settings for debugging
+  Serial.print("Attempting to connect to SSID: ");
+  Serial.println(wifiSsid);
   
   // Setup WiFi
   setup_wifi();
