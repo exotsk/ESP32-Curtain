@@ -2,11 +2,11 @@
 #define CONFIG_H
 
 // WiFi Configuration
-#define WIFI_SSID "Your SSID"
-#define WIFI_PASSWORD "Your Password"
+#define WIFI_SSID "XonoAlarm"
+#define WIFI_PASSWORD "1234567890"
 
 // MQTT Configuration
-#define MQTT_SERVER "Your mqtt server"
+#define MQTT_SERVER "192.168.1.110"
 #define MQTT_PORT 1883
 
 // Optional MQTT Authentication (leave empty if not needed)
@@ -27,3 +27,45 @@
 #define MQTT_RETRY_DELAY 5000  // milliseconds
 
 #endif // CONFIG_H
+
+// Backwards-compatible names expected by CurtainsESP32.ino
+// These map old names used in the .ino file to the values above.
+#ifndef CURTAIN_MAXIMUM
+#define CURTAIN_MAXIMUM CURTAIN_MAX_POSITION
+#endif
+
+#ifndef POSITION_SCALE
+#define POSITION_SCALE POSITION_SCALE_FACTOR
+#endif
+
+#ifndef WATCHDOG_TIMEOUT_S
+#define WATCHDOG_TIMEOUT_S WATCHDOG_TIMEOUT
+#endif
+
+#ifndef WIFI_CONNECT_TIMEOUT_MS
+#define WIFI_CONNECT_TIMEOUT_MS WIFI_TIMEOUT
+#endif
+
+#ifndef MQTT_RECONNECT_DELAY_MS
+#define MQTT_RECONNECT_DELAY_MS MQTT_RETRY_DELAY
+#endif
+
+#ifndef MQTT_RECONNECT_MAX_DELAY_MS
+#define MQTT_RECONNECT_MAX_DELAY_MS 30000
+#endif
+
+#ifndef WEB_SERVER_PORT
+#define WEB_SERVER_PORT 80
+#endif
+
+#ifndef MDNS_HOSTNAME
+#define MDNS_HOSTNAME "curtains"
+#endif
+
+#ifndef MSG_BUFFER_SIZE
+#define MSG_BUFFER_SIZE 64
+#endif
+
+#ifndef STOP_HYSTERESIS
+#define STOP_HYSTERESIS 5
+#endif
