@@ -70,7 +70,7 @@ WebServer server(WEB_SERVER_PORT);
 
 //Forwarddeclarations
 void setup_wifi();
-void callback(char* topic, byte* payload, unsigned int length);
+void callback(char*topic, byte* payload, unsigned int length);
 bool reconnect();
 void handleRoot();
 void handleSet();
@@ -88,10 +88,10 @@ const char HTML_PAGE[] PROGMEM = R"rawliteral(
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ESP32 Curtain Controller</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding:0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -102,7 +102,7 @@ const char HTML_PAGE[] PROGMEM = R"rawliteral(
             background:white;
             border-radius: 20px;
             padding:30px;
-box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+box-shadow:0 20px 60px rgba(0,0,0,0.3);
 max-width:600px;
 width:100%;
         }
@@ -110,7 +110,7 @@ width:100%;
            color: #333;
             text-align: center;
             margin-bottom: 10px;
-            font-size: 28px;
+font-size: 28px;
        }
         .status {
             text-align: center;
@@ -119,12 +119,12 @@ padding: 10px;
            margin-bottom: 30px;
             font-weight: 500;
 }
-        .status.online {background: #d4edda; color: #155724; }
+        .status.online {background:#d4edda; color: #155724; }
         .status.offline{ background: #f8d7da; color: #721c24; }
 .curtain-card {
             background: #f8f9fa;
             border-radius: 15px;
-            padding: 25px;
+           padding:25px;
             margin-bottom: 20px;
         }
 .curtain-title {
@@ -132,9 +132,9 @@ padding: 10px;
             font-weight:600;
             color: #495057;
             margin-bottom: 15px;
-           display: flex;
+           display:flex;
             align-items:center;
-            gap: 10px;
+gap: 10px;
         }
         .curtain-icon {
             font-size: 24px;
@@ -143,8 +143,8 @@ padding: 10px;
 text-align: center;
             font-size: 48px;
             font-weight: 700;
-           color: #667eea;
-            margin: 20px 0;
+           color:#667eea;
+           margin: 20px 0;
         }
        .position-label {
             text-align: center;
@@ -153,8 +153,8 @@ color:#6c757d;
             margin-bottom: 20px;
         }
         .slider {
-           width: 100%;
-            height: 8px;
+           width:100%;
+           height:8px;
             border-radius: 5px;
 background: #e9ecef;
             outline: none;
@@ -163,22 +163,22 @@ background: #e9ecef;
         }
         .slider::-webkit-slider-thumb {
             -webkit-appearance: none;
-            appearance: none;
-            width: 24px;
+            appearance:none;
+           width:24px;
             height:24px;
             border-radius: 50%;
 background:#667eea;
             cursor: pointer;
             box-shadow: 0 2px 5pxrgba(0,0,0,0.2);
         }
-        .slider::-moz-range-thumb {
+        .slider::-moz-range-thumb{
 width: 24px;
             height: 24px;
             border-radius: 50%;
 background: #667eea;
             cursor: pointer;
             border: none;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 5pxrgba(0,0,0,0.2);
         }
         .button-group {
             display: grid;
@@ -206,7 +206,7 @@ text-align:center;
             color: #6c757d;
             font-size: 12px;
 margin-top: 20px;
-padding-top: 20px;
+padding-top:20px;
             border-top: 1px solid #e9ecef;
         }
         @media(max-width: 480px) {
@@ -222,7 +222,7 @@ padding-top: 20px;
         <div class="status online" id="status">● Connected</div>
         
         <!-- Curtain 1-->
-        <div class="curtain-card">
+        <divclass="curtain-card">
             <div class="curtain-title">
 <span class="curtain-icon">🪟</span>
 Curtain1</div>
@@ -241,14 +241,14 @@ Curtain1</div>
             <div class="curtain-title">
                <span class="curtain-icon">🪟</span>
                 Curtain 2</div>
-            <div class="position-display" id="pos2">0</div>
+           <div class="position-display" id="pos2">0</div>
 <div class="position-label">Position (0 = Open,550=Closed)</div>
             <input type="range" min="0" max="550" value="0" class="slider"id="slider2">
-            <div class="button-group">
+<div class="button-group">
                 <button class="btn btn-open" onclick="setPosition(2, 0)">Open</button>
                 <button class="btn btn-half" onclick="setPosition(2, 275)">Half</button>
                 <button class="btnbtn-close" onclick="setPosition(2, 550)">Close</button>
-                <button class="btn btn-stop" onclick="stopCurtain(2)">⏹ Stop</button>
+                <button class="btn btn-stop"onclick="stopCurtain(2)">⏹ Stop</button>
             </div>
         </div>
         
@@ -259,14 +259,14 @@ Curtain1</div>
     
 <script>
 const slider1 = document.getElementById('slider1');
-       const slider2 =document.getElementById('slider2');
+       const slider2=document.getElementById('slider2');
         const pos1Display = document.getElementById('pos1');
         const pos2Display= document.getElementById('pos2');
         
-        //Update display whenslider moves
+        //Updatedisplay whenslider moves
         slider1.oninput =function() {
 pos1Display.textContent = this.value;
-        }
+}
        slider2.oninput =function() {
             pos2Display.textContent = this.value;
         }
@@ -277,15 +277,15 @@ setPosition(1, this.value);
         }
         slider2.onchange =function(){
             setPosition(2,this.value);
-       }
+}
         
-        function setPosition(curtain, position) {
+        function setPosition(curtain,position) {
             fetch(`/set?curtain=${curtain}&position=${position}`)
                 .then(response => response.json())
                .then(data => {
 if (data.status === 'ok') {
                         console.log(`Curtain ${curtain} set to ${position}`);
-                        if (curtain ===1) {
+                        if (curtain ===1){
 slider1.value = position;
                             pos1Display.textContent = position;
                         } else {
@@ -297,8 +297,8 @@ pos2Display.textContent = position;
                 .catch(err => console.error('Error:', err));
         }
         
-function stopCurtain(curtain){
-            fetch(`/stop?curtain=${curtain}`)
+functionstopCurtain(curtain){
+           fetch(`/stop?curtain=${curtain}`)
                 .then(response => response.json())
                 .then(data => console.log('Stopped:',data))
                 .catch(err => console.error('Error:', err));
@@ -311,10 +311,10 @@ function updateStatus() {
                     pos1Display.textContent = data.position1;
                     pos2Display.textContent = data.position2;
                     slider1.value =data.position1;
-                    slider2.value = data.position2;
+                   slider2.value = data.position2;
                   document.getElementById('ip').textContent = data.ip;
                     document.getElementById('status').className = 'status online';
-                    document.getElementById('status').textContent = '● Connected';
+                   document.getElementById('status').textContent = '● Connected';
                 })
                 .catch(err => {
                     document.getElementById('status').className ='statusoffline';
@@ -323,7 +323,7 @@ function updateStatus() {
         }
         
 // Updatestatusevery 2 seconds
-        updateStatus();
+updateStatus();
         setInterval(updateStatus, 2000);
     </script>
 </body>
@@ -331,7 +331,7 @@ function updateStatus() {
 )rawliteral";
 
 void setup_wifi() {
- Serial.println("=== WiFi Connection Debug Info ===");
+ Serial.println("=== WiFi Connection Debug Info===");
   Serial.print("SSID:'");
 Serial.print(wifiSsid);
   Serial.println("'");
@@ -340,35 +340,35 @@ Serial.print(wifiSsid);
   
   // Check if we have valid SSID
   if (wifiSsid.length() == 0) {
-Serial.println("ERROR: SSID is empty!");
+Serial.println("ERROR:SSID is empty!");
    ESP.restart();
   }
   
 // WiFi scan before connecting
-  Serial.println("Scanning fornetworks...");
+  Serial.println("Scanningfornetworks...");
   int n = WiFi.scanNetworks();
   bool foundNetwork = false;
   
   if (n == 0){
 Serial.println("No networks foundduring scan");
-  } else {
+  } else{
     Serial.print("Found ");
     Serial.print(n);
     Serial.println(" networks:");
-    for (int i = 0; i <n; ++i) {
-      Serial.print(i + 1);
+    for (int i =0; i <n; ++i){
+     Serial.print(i + 1);
       Serial.print(": ");
       Serial.print(WiFi.SSID(i));
      Serial.print(" (");
-      Serial.print(WiFi.RSSI(i));
+     Serial.print(WiFi.RSSI(i));
      Serial.print(" dBm)");
       Serial.print(" CH:");
       Serial.print(WiFi.channel(i));
       
-//Check if this is our network
+//Checkif thisis our network
       if (WiFi.SSID(i) == wifiSsid) {
         foundNetwork = true;
-        Serial.print(" <- TARGET NETWORK");
+        Serial.print(" <-TARGET NETWORK");
 }
       
 // Print encryption type
@@ -376,7 +376,7 @@ switch (WiFi.encryptionType(i)) {
         case WIFI_AUTH_OPEN:
           Serial.print("OPEN");
           break;
-        case WIFI_AUTH_WEP:
+case WIFI_AUTH_WEP:
           Serial.print(" WEP");
           break;
        case WIFI_AUTH_WPA_PSK:
@@ -392,24 +392,24 @@ switch (WiFi.encryptionType(i)) {
 Serial.print(" WPA2_ENTERPRISE");
           break;
         default:
-          Serial.print(" UNKNOWN");
+          Serial.print("UNKNOWN");
           break;
 }
       Serial.println();
-      delay(10);
+delay(10);
     }
   }
   
   if (!foundNetwork) {
 Serial.println("WARNING: Target network notfound in scan!");
-  }
+ }
 Serial.print("Attempting to connect toWiFi...");
   
   // Disconnect and clear any previous connection
   WiFi.disconnect(true);
-  delay(1000);
-// Set WiFi mode
-  WiFi.mode(WIFI_STA);
+delay(1000);
+// Set WiFimode
+WiFi.mode(WIFI_STA);
   delay(100);
   
   // Try connecting with differentmethodsWiFi.begin(wifiSsid.c_str(), wifiPass.c_str());
@@ -417,43 +417,43 @@ Serial.print("Attempting to connect toWiFi...");
   uint32_t startAttemptTime = millis();
   
   while(WiFi.status()!= WL_CONNECTED && 
-         millis() - startAttemptTime < WIFI_CONNECT_TIMEOUT_MS) {
+         millis()- startAttemptTime < WIFI_CONNECT_TIMEOUT_MS) {
    delay(500);
     Serial.print(".");
-esp_task_wdt_reset();  // Reset watchdog during connection
+esp_task_wdt_reset(); // Reset watchdog during connection
 }
   
   if (WiFi.status() == WL_CONNECTED) {
    Serial.println("\nWiFiconnected!");
 Serial.print("IP address:");
-    Serial.println(WiFi.localIP());
+   Serial.println(WiFi.localIP());
   }else {
     Serial.println("\nWiFi connection failed!");
-Serial.print("WiFistatus code: ");
+Serial.print("WiFistatuscode: ");
     Serial.println(WiFi.status());
     
-    // Try one more time with a fresh startSerial.println("Trying onemoretime with fresh connection...");
+    // Try one more time with a fresh startSerial.println("Tryingonemoretime with fresh connection...");
    WiFi.disconnect(true);
-    delay(1000);
+   delay(1000);
 WiFi.mode(WIFI_STA);
     delay(100);
     WiFi.begin(wifiSsid.c_str(), wifiPass.c_str());
     
     startAttemptTime = millis();
-    while(WiFi.status() != WL_CONNECTED &&millis() - startAttemptTime < WIFI_CONNECT_TIMEOUT_MS) {
+    while(WiFi.status() !=WL_CONNECTED &&millis() - startAttemptTime <WIFI_CONNECT_TIMEOUT_MS) {
       delay(500);
       Serial.print("*");
       esp_task_wdt_reset();
 }
     
-    if (WiFi.status() ==WL_CONNECTED) {
+   if (WiFi.status() ==WL_CONNECTED) {
       Serial.println("\nWiFi connected on second attempt!");
       Serial.print("IPaddress:");
       Serial.println(WiFi.localIP());
-    } else {
+} else{
       Serial.println("\nWiFi connection failed on both attempts!");
       Serial.print("Final WiFistatuscode: ");
-      Serial.println(WiFi.status());
+Serial.println(WiFi.status());
       Serial.println("Restarting...");
       delay(1000);
       ESP.restart();
@@ -470,44 +470,41 @@ void callback(char* topic, byte* payload, unsigned int length) {
     return;
   }
   
-  // Copy payload to buffer
-  for (unsigned int i = 0; i < length; i++) {
+  // Copy payloadto buffer
+  for (unsigned int i = 0; i< length; i++) {
     msgBuffer[i] = (char)payload[i];
  }
-  msgBuffer[length] = '\0';
+  msgBuffer[length]= '\0';
   
   // Parse position value
-}
-}
-  float position = atof(msgBuffer);
+ float position = atof(msgBuffer);
   int32_t targetSteps = (int32_t)(position * positionScale);
   
-  // Validate range
-  if (targetSteps < 0 || targetSteps > curtainMax * positionScale) {
+ // Validate range
+if (targetSteps < 0 || targetSteps > curtainMax * positionScale) {
     Serial.print("Error: Position out of range: ");
     Serial.println(targetSteps);
     return;
   }
   
   // Route to correct stepper
-  if (strcmp(topic, MQTT_STEP1) == 0) {
-    controllers[0].targetPosition = targetSteps;
+if (strcmp(topic, MQTT_STEP1) == 0) {
+   controllers[0].targetPosition = targetSteps;
     controllers[0].stepper->moveTo(targetSteps);
     Serial.print("Stepper 1 -> ");
-    Serial.println(position);
-  } else if (strcmp(topic, MQTT_STEP2) == 0) {
-    controllers[1].targetPosition = targetSteps;
-    controllers[1].stepper->moveTo(targetSteps);
+Serial.println(position);
+  } else if (strcmp(topic, MQTT_STEP2)== 0) {
+    controllers[1].targetPosition =targetSteps;
+   controllers[1].stepper->moveTo(targetSteps);
     Serial.print("Stepper 2 -> ");
     Serial.println(position);
   }
 }
-}
 
 bool reconnect() {
-  uint32_t now = millis();
+ uint32_t now = millis();
   
-  // Non-blocking reconnect with exponential backoff
+  // Non-blocking reconnectwith exponential backoff
   if (now - lastReconnectAttempt < reconnectDelay) {
     return false;
   }
@@ -515,17 +512,17 @@ bool reconnect() {
   lastReconnectAttempt =now;
 Serial.print("Attempting MQTT connection...");
 // Create unique client ID
-  String clientId = String(MQTT_CLIENT_ID) + "-" + String(random(0xffff), HEX);
+  String clientId =String(MQTT_CLIENT_ID) + "-" + String(random(0xffff), HEX);
   
   bool connected = false;
-if(mqttUser.length() >0) {
+if(mqttUser.length()>0) {
     connected= client.connect(clientId.c_str(), mqttUser.c_str(),mqttPassw.c_str());
   } else {
     connected = client.connect(clientId.c_str());
   }
   
   if (connected){
-    Serial.println("connected!");
+   Serial.println("connected!");
     
     // Subscribetotopicsif(client.subscribe(MQTT_STEP1)){
 Serial.print("Subscribed to: ");
@@ -535,19 +532,18 @@ Serial.print("Subscribed to: ");
      Serial.print("Subscribed to: ");
       Serial.println(MQTT_STEP2);
     }
-//Resetreconnect delay onsuccess
+//Resetreconnectdelay onsuccess
 reconnectDelay = MQTT_RECONNECT_DELAY_MS;
-    return true;
+    return true
   } else {
-    Serial.print("failed, rc=");
-    Serial.println(client.state());
-    
-    // Exponential backoff (max 30 seconds)
-    reconnectDelay = min(reconnectDelay * 2, (uint32_t)MQTT_RECONNECT_MAX_DELAY_MS);
-    Serial.print("Next retry in: ");
-    Serial.print(reconnectDelay / 1000);
-    Serial.println("s");
-    return false;
+    Serial.print("failed, rc=")
+    Serial.println(client.state())
+
+    reconnectDelay = min(reconnectDelay * 2, (uint32_t)MQTT_RECONNECT_MAX_DELAY_MS)
+    Serial.print("Next retry in: ")
+    Serial.print(reconnectDelay / 1000)
+    Serial.println("s")
+    return false
   }
 }
 
@@ -567,11 +563,11 @@ void handleSet() {
 }
     
     // Set position
-int32_t targetSteps= position * positionScale;
-    controllers[curtain - 1].targetPosition= targetSteps;
-    controllers[curtain - 1].stepper->moveTo(targetSteps);
+int32_t targetSteps= position * positionScale
+    controllers[curtain - 1].targetPosition= targetSteps
+    controllers[curtain - 1].stepper->moveTo(targetSteps)
     
-    Serial.print("Web: Curtain ");
+    Serial.print("Web: Curtain ")
     Serial.print(curtain);
     Serial.print(" -> ");
 Serial.println(position);
@@ -584,10 +580,10 @@ Serial.println(position);
 
 void handleStop() {
   if (server.hasArg("curtain")) {
-    int curtain = server.arg("curtain").toInt();
-    if (curtain < 1 || curtain > 2) {
+int curtain = server.arg("curtain").toInt();
+    if(curtain <1 || curtain > 2) {
       server.send(400, "application/json", "{\"status\":\"error\",\"message\":\"Invalid curtain\"}");
-      return;
+     return;
     }
     
     // Stop thecurtain
@@ -596,19 +592,19 @@ void handleStop() {
 Serial.print("Web: Stopped curtain ");
     Serial.println(curtain);
     
-    server.send(200, "application/json", "{\"status\":\"ok\"}");
+server.send(200, "application/json", "{\"status\":\"ok\"}");
 } else {
-    server.send(400, "application/json", "{\"status\":\"error\",\"message\":\"Missing curtain parameter\"}");
+    server.send(400,"application/json", "{\"status\":\"error\",\"message\":\"Missing curtainparameter\"}");
  }
 }
 
-voidhandleStatus() {
+void handleStatus() {
   int32_t pos1 = controllers[0].stepper->currentPosition() / positionScale;
- int32_t pos2 = controllers[1].stepper->currentPosition() / positionScale;
+ int32_t pos2= controllers[1].stepper->currentPosition() / positionScale;
   
-  String json = "{";
+  String json= "{";
   json += "\"position1\":" + String(pos1) + ",";
-  json += "\"position2\":" + String(pos2) + ",";
+  json += "\"position2\":" + String(pos2)+ ",";
  json += "\"ip\":\""+ WiFi.localIP().toString() + "\"";
   json+= "}";
   
@@ -616,25 +612,25 @@ voidhandleStatus() {
 }
 
 void setupWebServer(){
-  // Setup routes
- server.on("/", handleRoot);
-  server.on("/set", handleSet);
-  server.on("/stop", handleStop);
-  server.on("/status", handleStatus);
+ // Setup routes
+ server.on("/", handleRoot)
+  server.on("/set", handleSet)
+  server.on("/stop", handleStop)
+  server.on("/status", handleStatus)
   
-  // Start server
+// Start server
   server.begin();
   Serial.println("Web server started");
   
-  // Setup mDNS
+  // SetupmDNS
   if (MDNS.begin(MDNS_HOSTNAME)) {
     Serial.print("mDNS responder started: http://");
-    Serial.print(MDNS_HOSTNAME);
+   Serial.print(MDNS_HOSTNAME);
     Serial.println(".local");
     MDNS.addService("http", "tcp", WEB_SERVER_PORT);
   } else {
-    Serial.println("Error setting up mDNS responder!");
-  }
+    Serial.println("Errorsetting up mDNS responder!");
+ }
 }
 
 void setup() {
@@ -651,15 +647,15 @@ esp_task_wdt_add(NULL);
   // Load persisted settings (NVS)
  prefs.begin("curtains", false);
   
-  // Check if this is the first boot (no settings saved)
+  // Checkif this is the first boot (no settings saved)
   bool firstBoot = !prefs.isKey("ssid");
   
-  // Handle case where we want toforce reload from config.h
-  // Check if we should reset WiFi settings (hold pin 17 low during boot)
+  // Handle casewhere we want toforce reload from config.h
+  // Check if we should reset WiFi settings (holdpin 17 low during boot)
   pinMode(SWITCH_1_PIN, INPUT_PULLUP);
   delay(10);
   if(digitalRead(SWITCH_1_PIN) == LOW) {
-   Serial.println("Resetting WiFi settings to defaults...");
+  Serial.println("Resetting WiFi settings to defaults...");
     prefs.remove("ssid");
     prefs.remove("pass");
     firstBoot =true;
@@ -667,46 +663,45 @@ esp_task_wdt_add(NULL);
   
   // Load settings from NVS or config.h
   if (firstBoot) {
-   Serial.println("First boot - loading settings from config.h");
+   Serial.println("First boot - loading settings fromconfig.h");
     wifiSsid = WIFI_SSID;
     wifiPass= WIFI_PASSWORD;
     mqttServer = MQTT_SERVER;
-    mqttPort =MQTT_PORT;
+   mqttPort =MQTT_PORT;
     mqttUser = MQTT_USER;
     mqttPassw = MQTT_PASS;
     curtainMax = CURTAIN_MAXIMUM;
     positionScale = POSITION_SCALE;
-    
-    // Save to NVS for future bootsprefs.putString("ssid", wifiSsid);
+// Save to NVS for future bootsprefs.putString("ssid", wifiSsid);
     prefs.putString("pass", wifiPass);
     prefs.putString("mqtt_srv", mqttServer);
     prefs.putInt("mqtt_port", mqttPort);
     prefs.putString("mqtt_user", mqttUser);
     prefs.putString("mqtt_pass", mqttPassw);
-    prefs.putInt("curtain_max", curtainMax);
+   prefs.putInt("curtain_max", curtainMax);
     prefs.putInt("pos_scale", positionScale);
-  } else {
+ } else {
 Serial.println("Loading settings from NVS");
-    wifiSsid = prefs.getString("ssid", WIFI_SSID);
+    wifiSsid =prefs.getString("ssid", WIFI_SSID);
     wifiPass = prefs.getString("pass", WIFI_PASSWORD);
-    mqttServer = prefs.getString("mqtt_srv", MQTT_SERVER);
+   mqttServer = prefs.getString("mqtt_srv", MQTT_SERVER);
    mqttPort = prefs.getInt("mqtt_port", MQTT_PORT);
-    mqttUser= prefs.getString("mqtt_user", MQTT_USER);
-    mqttPassw = prefs.getString("mqtt_pass", MQTT_PASS);
+   mqttUser= prefs.getString("mqtt_user", MQTT_USER);
+    mqttPassw =prefs.getString("mqtt_pass", MQTT_PASS);
     curtainMax = prefs.getInt("curtain_max", CURTAIN_MAXIMUM);
-   positionScale = prefs.getInt("pos_scale", POSITION_SCALE);
+   positionScale= prefs.getInt("pos_scale", POSITION_SCALE);
   }
   
   // Configure limit switches
-  pinMode(SWITCH_1_PIN, INPUT_PULLUP);
-  pinMode(SWITCH_2_PIN, INPUT_PULLUP);
-  pinMode(SWITCH_3_PIN, INPUT_PULLUP);
-  pinMode(SWITCH_4_PIN,INPUT_PULLUP);
-  Serial.println("Limit switches configured");
+  pinMode(SWITCH_1_PIN, INPUT_PULLUP)
+  pinMode(SWITCH_2_PIN, INPUT_PULLUP)
+  pinMode(SWITCH_3_PIN, INPUT_PULLUP)
+  pinMode(SWITCH_4_PIN, INPUT_PULLUP)
+  Serial.println("Limit switches configured")
   
-  // Print WiFi settings for debugging
-  Serial.print("Attempting to connect to SSID: ");
-  Serial.println(wifiSsid);
+  // Print WiFi settingsfor debugging
+  Serial.print("Attempting to connect to SSID: ")
+  Serial.println(wifiSsid)
   
   // Setup WiFi
   setup_wifi();
@@ -718,15 +713,15 @@ Serial.println("Loading settings from NVS");
   Serial.println("MQTT configured");
   
   // Configure steppers
-  stepper1.setMaxSpeed(STEPPER_MAX_SPEED);
+ stepper1.setMaxSpeed(STEPPER_MAX_SPEED);
   stepper1.setAcceleration(STEPPER_ACCELERATION);
-  stepper2.setMaxSpeed(STEPPER_MAX_SPEED);
+ stepper2.setMaxSpeed(STEPPER_MAX_SPEED);
 stepper2.setAcceleration(STEPPER_ACCELERATION);
   Serial.println("Steppers configured");
   
   // Setup Web Server
   setupWebServer();
-  Serial.print("Web interface available at: http://");
+Serial.print("Web interface available at: http://");
   Serial.println(WiFi.localIP());
   
   Serial.println("Setup complete!\n");
@@ -737,14 +732,14 @@ void processStepperController(StepperController& ctrl) {
 int32_t currentPos = ctrl.stepper->currentPosition() / positionScale;
   
   // Check if hysteresis is active
-  if (ctrl.hysteresisActive) {
+  if (ctrl.hysteresisActive){
     // Disable hysteresis if position is outside dead zone
-    if ((currentPos > STOP_HYSTERESIS) && (currentPos < curtainMax - STOP_HYSTERESIS)) {
+    if((currentPos > STOP_HYSTERESIS) && (currentPos < curtainMax -STOP_HYSTERESIS)) {
       ctrl.hysteresisActive = false;
     }
   } else {
-// Check upper limit switch
-    if (digitalRead(ctrl.upperLimitPin) == LOW) {
+// Check upperlimit switch
+    if(digitalRead(ctrl.upperLimitPin) == LOW) {
       ctrl.stepper->stop();
 ctrl.stepper->disableOutputs();
      ctrl.stepper->setCurrentPosition(curtainMax* positionScale);
@@ -752,31 +747,31 @@ ctrl.stepper->disableOutputs();
       Serial.println("Upper limit reached");
     }
     
-    // Checklower limit switchif (digitalRead(ctrl.lowerLimitPin) == LOW){
-      ctrl.stepper->stop();
+   // Checklower limit switchif (digitalRead(ctrl.lowerLimitPin) == LOW){
+ctrl.stepper->stop();
      ctrl.stepper->disableOutputs();
      ctrl.stepper->setCurrentPosition(0);
       ctrl.hysteresisActive = true;
 Serial.println("Lower limit reached");
-    }
+}
  }
   
-  // Publishposition if changed
+ // Publishposition if changed
   if (currentPos != ctrl.lastPublishedPosition) {
 ctrl.lastPublishedPosition= currentPos;
    snprintf(msgBuffer, MSG_BUFFER_SIZE,"%d", currentPos);
     if (client.publish(ctrl.positionTopic, msgBuffer,true)) {
       // Position published successfully
-   }
+  }
   }
   
-  //Run stepper if not attarget
+//Run stepper if not attarget
  if (ctrl.targetPosition !=ctrl.stepper->currentPosition()) {
     ctrl.stepper->run();
  }
 }
 
-void loop() {
+voidloop() {
   // Reset watchdog timer
   esp_task_wdt_reset();
   
@@ -785,19 +780,17 @@ void loop() {
     Serial.println("WiFi disconnected! Reconnecting...");
 setup_wifi();
 }
-  
-  // Handle MQTT connection (non-blocking)
+// Handle MQTT connection (non-blocking)
   if (!client.connected()){
     reconnect();
-} else {
+} else{
     client.loop();
   }
   
    // Handle web server requests
   server.handleClient();
   
-  //Process both steppers
- processStepperController(controllers[0]);
+  //Process both steppersprocessStepperController(controllers[0]);
   processStepperController(controllers[1]);
   
   // Small delay to prevent tight loop
