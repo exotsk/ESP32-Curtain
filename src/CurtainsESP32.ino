@@ -86,9 +86,9 @@ const char HTML_PAGE[] PROGMEM = R"rawliteral(
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ESP32 Curtain Controller</title>
+    <title>ESP32 Curtain Controller</title>
     <style>
-        *{ margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -545,7 +545,7 @@ reconnectDelay = MQTT_RECONNECT_DELAY_MS;
   Serial.print(reconnectDelay / 1000);
     Serial.println("s");
     return false;
-  }
+}
 }
 
 // Web Server Handlers
