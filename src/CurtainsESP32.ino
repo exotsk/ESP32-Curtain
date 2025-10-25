@@ -769,7 +769,6 @@ ctrl.lastPublishedPosition= currentPos;
   if (ctrl.targetPosition != ctrl.stepper->currentPosition()) {
     ctrl.stepper->run();
   }
-}
 
 void loop() {
   // Reset watchdog timer
