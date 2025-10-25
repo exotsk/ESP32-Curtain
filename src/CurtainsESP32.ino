@@ -25,16 +25,16 @@ const int SWITCH_3_PIN = 14; //Stepper 2 - Upper limit
 const int SWITCH_4_PIN = 12;  // Stepper 2 - Lower limit
 
 // Stepper Motor Pins
-const int STEPPER1_PINS[4] = {32, 25, 33, 26};
-const int STEPPER2_PINS[4] = {23, 21, 22, 19};
+const int STEPPER1_PINS[4] = {32, 25, 33, 26}; // Stepper 1 pins
+const int STEPPER2_PINS[4] = {23, 21, 22, 19}; // Stepper 2 pins
 
 // Preferences
 Preferences prefs;
-// Initializewith values from config.h
+// Initialize with values from config.h
 String wifiSsid = WIFI_SSID;
 String wifiPass = WIFI_PASSWORD;
 String mqttServer = MQTT_SERVER;
-int mqttPort= MQTT_PORT;
+int mqttPort = MQTT_PORT;
 String mqttUser = MQTT_USER;  // Leave empty if not needed
 String mqttPassw = MQTT_PASS;  // Leave empty if not needed
 int curtainMax = CURTAIN_MAXIMUM;
@@ -58,8 +58,8 @@ AccelStepper stepper1(AccelStepper::HALF4WIRE, STEPPER1_PINS[0], STEPPER1_PINS[1
 AccelStepper stepper2(AccelStepper::HALF4WIRE, STEPPER2_PINS[0], STEPPER2_PINS[1], STEPPER2_PINS[2], STEPPER2_PINS[3]);
 
 StepperController controllers[2] = {
-  {&stepper1, 0, 0,false, SWITCH_1_PIN, SWITCH_2_PIN, PUB_STEPS1},
-  {&stepper2, 0, 0, false, SWITCH_3_PIN, SWITCH_4_PIN, PUB_STEPS2}
+    {&stepper1, 0, 0, false, SWITCH_1_PIN, SWITCH_2_PIN, PUB_STEPS1},
+    {&stepper2, 0, 0, false, SWITCH_3_PIN, SWITCH_4_PIN, PUB_STEPS2}
 };
 
 char msgBuffer[MSG_BUFFER_SIZE] = {0};
@@ -595,7 +595,7 @@ Serial.print("Web: Stopped curtain ");
     
     server.send(200, "application/json", "{\"status\":\"ok\"}");
 } else {
-   server.send(400,"application/json", "{\"status\":\"error\",\"message\":\"Missing curtain parameter\"}");
+    server.send(400, "application/json", "{\"status\":\"error\",\"message\":\"Missing curtain parameter\"}");
  }
 }
 
