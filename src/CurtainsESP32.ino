@@ -91,7 +91,7 @@ const char HTML_PAGE[] PROGMEM = R"rawliteral(
         * { margin: 0; padding:0; box-sizing: border-box; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -222,7 +222,7 @@ padding-top:20px;
         <div class="status online" id="status">● Connected</div>
         
         <!-- Curtain 1-->
-        <divclass="curtain-card">
+                <div class="curtain-card">
             <div class="curtain-title">
 <span class="curtain-icon">🪟</span>
 Curtain1</div>
@@ -766,10 +766,9 @@ ctrl.lastPublishedPosition= currentPos;
   }
   
 //Run stepper if not attarget
- if (ctrl.targetPosition !=ctrl.stepper->currentPosition()) {
+  if (ctrl.targetPosition != ctrl.stepper->currentPosition()) {
     ctrl.stepper->run();
- }
-}
+  }
 
 void loop() {
   // Reset watchdog timer
