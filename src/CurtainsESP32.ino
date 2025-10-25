@@ -765,31 +765,34 @@ ctrl.lastPublishedPosition= currentPos;
   }
   }
   
-//Run stepper if not attarget
+// Run stepper if not at target
   if (ctrl.targetPosition != ctrl.stepper->currentPosition()) {
     ctrl.stepper->run();
   }
+}
 
 void loop() {
   // Reset watchdog timer
   esp_task_wdt_reset();
   
-// Check WiFi connection
-  if (WiFi.status() != WL_CONNECTED){
+  // Check WiFi connection
+  if (WiFi.status() != WL_CONNECTED) {
     Serial.println("WiFi disconnected! Reconnecting...");
-setup_wifi();
-}
-// Handle MQTT connection (non-blocking)
-  if (!client.connected()){
+    setup_wifi();
+  }
+  
+  // Handle MQTT connection (non-blocking)
+  if (!client.connected()) {
     reconnect();
-} else{
+  } else {
     client.loop();
   }
   
-   // Handle web server requests
+  // Handle web server requests
   server.handleClient();
   
-  //Process both steppersprocessStepperController(controllers[0]);
+  // Process both steppers
+  processStepperController(controllers[0]);
   processStepperController(controllers[1]);
   
   // Small delay to prevent tight loop
