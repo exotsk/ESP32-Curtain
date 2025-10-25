@@ -230,8 +230,8 @@ Curtain1</div>
            <div class="position-label">Position (0 =Open, 550 = Closed)</div>
            <input type="range" min="0"max="550" value="0"class="slider" id="slider1">
             <div class="button-group">
-                <button class="btnbtn-open" onclick="setPosition(1, 0)">Open</button>
-                <button class="btnbtn-half" onclick="setPosition(1, 275)">Half</button>
+                <button class="btn btn-open" onclick="setPosition(1, 0)">Open</button>
+                <button class="btn btn-half" onclick="setPosition(1, 275)">Half</button>
                                <button class="btn btn-close" onclick="setPosition(1, 550)">Close</button>
                <button class="btn btn-stop" onclick="stopCurtain(1)">⏹ Stop</button>
 </div>
@@ -245,7 +245,7 @@ Curtain1</div>
 <div class="position-label">Position (0 = Open,550=Closed)</div>
             <input type="range" min="0" max="550" value="0" class="slider" id="slider2">
             <div class="button-group">
-                <button class="btn btn-open" onclick="setPosition(2,0)">Open</button>
+                <button class="btn btn-open" onclick="setPosition(2, 0)">Open</button>
                 <button class="btn btn-half" onclick="setPosition(2, 275)">Half</button>
                 <button class="btn btn-close" onclick="setPosition(2, 550)">Close</button>
                 <button class="btn btn-stop" onclick="stopCurtain(2)">⏹ Stop</button>
@@ -478,6 +478,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
   msgBuffer[length] = '\0';
   
   // Parse position value
+  }
   float position = atof(msgBuffer);
   int32_t targetSteps = (int32_t)(position * positionScale);
   
@@ -627,7 +628,7 @@ void setupWebServer(){
 //Setup mDNSif (MDNS.begin(MDNS_HOSTNAME)){
     Serial.print("mDNS responder started: http://");
     Serial.print(MDNS_HOSTNAME);
-   Serial.println(".local");
+    Serial.println(".local");
     MDNS.addService("http", "tcp", WEB_SERVER_PORT);
   } else {
     Serial.println("Error setting up mDNS responder!");
