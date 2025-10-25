@@ -232,9 +232,9 @@ Curtain1</div>
             <div class="button-group">
                 <button class="btn btn-open" onclick="setPosition(1, 0)">Open</button>
                 <button class="btn btn-half" onclick="setPosition(1, 275)">Half</button>
-                               <button class="btn btn-close" onclick="setPosition(1, 550)">Close</button>
-               <button class="btn btn-stop" onclick="stopCurtain(1)">⏹ Stop</button>
-</div>
+                <button class="btn btn-close" onclick="setPosition(1, 550)">Close</button>
+                <button class="btn btn-stop" onclick="stopCurtain(1)">⏹ Stop</button>
+            </div>
        </div>
 <!--Curtain2 -->
         <div class="curtain-card">
@@ -478,7 +478,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
   msgBuffer[length] = '\0';
   
   // Parse position value
-  }
+}
   float position = atof(msgBuffer);
   int32_t targetSteps = (int32_t)(position * positionScale);
   
