@@ -542,9 +542,9 @@ reconnectDelay = MQTT_RECONNECT_DELAY_MS;
     Serial.println(client.state());
     
     // Exponential backoff (max 30 seconds)
-    reconnectDelay = min(reconnectDelay *2, (uint32_t)MQTT_RECONNECT_MAX_DELAY_MS);
+    reconnectDelay = min(reconnectDelay * 2, (uint32_t)MQTT_RECONNECT_MAX_DELAY_MS);
     Serial.print("Next retry in:");
-  Serial.print(reconnectDelay / 1000);
+    Serial.print(reconnectDelay / 1000);
     Serial.println("s");
     return false;
   }
