@@ -79,7 +79,7 @@ void handleStatus();
 void setupWebServer();
 void processStepperController(StepperController& ctrl);
 
-// Web ServerHTML Interface
+// Web Server HTML Interface
 const char HTML_PAGE[] PROGMEM = R"rawliteral(
 <!DOCTYPE html>
 <html lang="en">
@@ -499,7 +499,6 @@ Serial.print("Error: Position outofrange: ");
   controllers[1].stepper->moveTo(targetSteps);
     Serial.print("Stepper 2 -> ");
     Serial.println(position);
-  }
 }
 
 bool reconnect() {
@@ -543,7 +542,7 @@ reconnectDelay =MQTT_RECONNECT_DELAY_MS;
     // Exponential backoff (max 30 seconds)
     reconnectDelay = min(reconnectDelay *2, (uint32_t)MQTT_RECONNECT_MAX_DELAY_MS);
     Serial.print("Next retry in:");
-  Serial.print(reconnectDelay/ 1000);
+  Serial.print(reconnectDelay / 1000);
     Serial.println("s");
     return false;
   }
@@ -628,7 +627,7 @@ void setupWebServer(){
     Serial.print("mDNS responder started: http://");
     Serial.print(MDNS_HOSTNAME);
    Serial.println(".local");
-    MDNS.addService("http", "tcp",WEB_SERVER_PORT);
+    MDNS.addService("http", "tcp", WEB_SERVER_PORT);
   } else {
     Serial.println("Error setting up mDNS responder!");
  }
