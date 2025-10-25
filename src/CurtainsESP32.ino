@@ -625,7 +625,8 @@ void setupWebServer(){
   server.begin();
   Serial.println("Web server started");
   
-//Setup mDNSif (MDNS.begin(MDNS_HOSTNAME)){
+  // Setup mDNS
+  if (MDNS.begin(MDNS_HOSTNAME)) {
     Serial.print("mDNS responder started: http://");
     Serial.print(MDNS_HOSTNAME);
     Serial.println(".local");
