@@ -10,12 +10,6 @@
 
 // Configuration Constants
 #define MQTT_VERSION MQTT_VERSION_3_1_1
-#define WATCHDOG_TIMEOUT_S 10
-#define WIFI_CONNECT_TIMEOUT_MS 20000
-#define MQTT_RECONNECT_DELAY_MS 5000
-#define MQTT_RECONNECT_MAX_DELAY_MS 30000
-#define WEB_SERVER_PORT 80
-#define MDNS_HOSTNAME "curtains"
 
 // MQTT Topics
 const char* MQTT_CLIENT_ID = "CURTAINS";
@@ -23,12 +17,6 @@ const char* MQTT_STEP1 = "/CURTAINS/ROLL1/";
 const char* MQTT_STEP2 = "/CURTAINS/ROLL2/";
 const char* PUB_STEPS1 = "/CURTAINS/ROLL1_step/";
 const char* PUB_STEPS2 = "/CURTAINS/ROLL2_step/";
-
-// CurtainSettings
-#define CURTAIN_MAXIMUM 550
-#define STOP_HYSTERESIS 5
-#define MSG_BUFFER_SIZE 20
-#define POSITION_SCALE 100
 
 // Pin Configuration
 const int SWITCH_1_PIN = 17;  // Stepper 1 - Upper limit
@@ -74,7 +62,7 @@ StepperController controllers[2] = {
   {&stepper2, 0, 0, false, SWITCH_3_PIN, SWITCH_4_PIN, PUB_STEPS2}
 };
 
-char msgBuffer[MSG_BUFFER_SIZE];
+char msgBuffer[MSG_BUFFER_SIZE] = {0};
 uint32_t lastReconnectAttempt =0;
 uint32_t reconnectDelay = MQTT_RECONNECT_DELAY_MS;
 
@@ -558,6 +546,7 @@ reconnectDelay =MQTT_RECONNECT_DELAY_MS;
   Serial.print(reconnectDelay/ 1000);
     Serial.println("s");
     return false;
+  }
 }
 
 // Web Server Handlers
@@ -788,7 +777,7 @@ ctrl.lastPublishedPosition= currentPos;
  }
 }
 
-voidloop(){
+void loop() {
   // Reset watchdog timer
   esp_task_wdt_reset();
   
