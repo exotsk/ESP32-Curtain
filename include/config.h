@@ -2,8 +2,8 @@
 #define CONFIG_H
 
 // WiFi Configuration
-#define WIFI_SSID "XonoAlarm"          // WiFi network name
-#define WIFI_PASSWORD "1234567890"      // WiFi password
+#define WIFI_SSID "IoT"          // WiFi network name
+#define WIFI_PASSWORD "677380677380"      // WiFi password
 
 // MQTT Configuration
 #define MQTT_SERVER "192.168.1.110"     // MQTT broker IP address

@@ -10,3 +10,77 @@
 
 # 2025-10-20 17:10:35.855587
 +y
+
+# 2025-10-25 19:46:43.633695
++исправь ошибки
+
+# 2025-10-25 19:47:25.271800
++н
+
+# 2025-10-25 19:54:25.994620
++cd /Users/exo/Git/ESP32-Curtain && pio run
+
+# 2025-10-25 19:55:19.610263
++cd /Users/exo/Git/ESP32-Curtain && pio run -t upload
+
+# 2025-10-25 19:56:03.670145
++cd /Users/exo/Git/ESP32-Curtain && ls -la
+
+# 2025-10-25 19:56:32.086704
++pio --version
+
+# 2025-10-25 20:02:37.767727
++cd /Users/exo/Git/ESP32-Curtain && pio run -t upload
+
+# 2025-10-25 20:05:38.008990
++/run cd /Users/exo/Git/ESP32-Curtain && pio run -t upload
+
+# 2025-10-25 20:05:38.009224
++/run cd /Users/exo/Git/ESP32-Curtain && pio run -t upload
+
+# 2025-10-25 20:07:05.821014
++исправь ошибки
+
+# 2025-10-25 20:13:22.464772
++--watch-files
+
+# 2025-10-25 20:17:14.896374
++cd /Users/exo/Git/ESP32-Curtain && pio run
+
+# 2025-10-25 20:18:00.966396
++cd /Users/exo/Git/ESP32-Curtain && pio run 2>&1 | head -50
+
+# 2025-10-25 20:39:08.465724
++ошибка компиляции |-- WebServer @ 2.0.0
++|-- WiFi @ 2.0.0
++Building in release mode
++Compiling .pio/build/esp32dev/src/CurtainsESP32.ino.cpp.o
++/Users/exo/Git/ESP32-Curtain/src/CurtainsESP32.ino: In function 'bool reconnect()':
++/Users/exo/Git/ESP32-Curtain/src/CurtainsESP32.ino:540:16: error: expected ';' before '}' token
++     Serial.println(client.state())
++                ^
++                ;
++ 
++                 
++/Users/exo/Git/ESP32-Curtain/src/CurtainsESP32.ino: At global scope:
++/Users/exo/Git/ESP32-Curtain/src/CurtainsESP32.ino:541:5: error: expected unqualified-id before 'else'
++ 
++     ^   
++/Users/exo/Git/ESP32-Curtain/src/CurtainsESP32.ino:551:1: error: expected declaration before '}' token
++ void handleRoot() {
++ ^
++*** [.pio/build/esp32dev/src/CurtainsESP32.ino.cpp.o] Error 1
++Compiling .pio/build/esp32dev/FrameworkArduino/esp32-hal-uart.c.o
+
+# 2025-10-25 20:45:08.082432
++ошибка |-- WiFi @ 2.0.0
++Building in release mode
++Compiling .pio/build/esp32dev/src/CurtainsESP32.ino.cpp.o
++/Users/exo/Git/ESP32-Curtain/src/CurtainsESP32.ino:542:5: error: expected unqualified-id before 'else'
++     reconnectDelay = min(reconnectDelay * 2, (uint32_t)MQTT_RECONNECT_MAX_DELAY_MS);
++     ^~~~
++/Users/exo/Git/ESP32-Curtain/src/CurtainsESP32.ino:552:1: error: expected declaration before '}' token
++   server.send(200, "text/html", HTML_PAGE);
++ ^
++Compiling .pio/build/esp32dev/FrameworkArduino/libb64/cdecode.c.o
++*** [.pio/build/esp32dev/src/CurtainsESP32.ino.cpp.o] Error 1
