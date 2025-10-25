@@ -532,9 +532,9 @@ Serial.print("Subscribed to: ");
      Serial.print("Subscribed to: ");
       Serial.println(MQTT_STEP2);
     }
-//Resetreconnectdelay onsuccess
+// Reset reconnect delay on success
 reconnectDelay = MQTT_RECONNECT_DELAY_MS;
-    return true
+    return true;
   } else {
     Serial.print("failed, rc=");
     Serial.println(client.state());
@@ -563,11 +563,11 @@ void handleSet() {
 }
     
     // Set position
-int32_t targetSteps= position * positionScale
-    controllers[curtain - 1].targetPosition= targetSteps
-    controllers[curtain - 1].stepper->moveTo(targetSteps)
+int32_t targetSteps = position * positionScale;
+    controllers[curtain - 1].targetPosition = targetSteps;
+    controllers[curtain - 1].stepper->moveTo(targetSteps);
     
-    Serial.print("Web: Curtain ")
+    Serial.print("Web: Curtain ");
     Serial.print(curtain);
     Serial.print(" -> ");
 Serial.println(position);
@@ -613,10 +613,10 @@ void handleStatus() {
 
 void setupWebServer(){
  // Setup routes
- server.on("/", handleRoot)
-  server.on("/set", handleSet)
-  server.on("/stop", handleStop)
-  server.on("/status", handleStatus)
+  server.on("/", handleRoot);
+  server.on("/set", handleSet);
+  server.on("/stop", handleStop);
+  server.on("/status", handleStatus);
   
 // Start server
   server.begin();
@@ -771,7 +771,7 @@ ctrl.lastPublishedPosition= currentPos;
  }
 }
 
-voidloop() {
+void loop() {
   // Reset watchdog timer
   esp_task_wdt_reset();
   
