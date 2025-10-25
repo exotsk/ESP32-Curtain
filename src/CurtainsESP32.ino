@@ -478,28 +478,30 @@ void callback(char* topic, byte* payload, unsigned int length) {
   
   // Parse position value
 }
+}
   float position = atof(msgBuffer);
   int32_t targetSteps = (int32_t)(position * positionScale);
   
-  //Validate range
-  if(targetSteps < 0 || targetSteps > curtainMax*positionScale) {
-Serial.print("Error: Position outofrange: ");
+  // Validate range
+  if (targetSteps < 0 || targetSteps > curtainMax * positionScale) {
+    Serial.print("Error: Position out of range: ");
     Serial.println(targetSteps);
     return;
   }
   
   // Route to correct stepper
-  if(strcmp(topic, MQTT_STEP1)== 0) {
-   controllers[0].targetPosition = targetSteps;
+  if (strcmp(topic, MQTT_STEP1) == 0) {
+    controllers[0].targetPosition = targetSteps;
     controllers[0].stepper->moveTo(targetSteps);
     Serial.print("Stepper 1 -> ");
     Serial.println(position);
- } else if (strcmp(topic, MQTT_STEP2) ==0) {
+  } else if (strcmp(topic, MQTT_STEP2) == 0) {
     controllers[1].targetPosition = targetSteps;
-  controllers[1].stepper->moveTo(targetSteps);
+    controllers[1].stepper->moveTo(targetSteps);
     Serial.print("Stepper 2 -> ");
     Serial.println(position);
   }
+}
 }
 
 bool reconnect() {
@@ -536,14 +538,14 @@ Serial.print("Subscribed to: ");
 //Resetreconnect delay onsuccess
 reconnectDelay = MQTT_RECONNECT_DELAY_MS;
     return true;
-  }else {
+  } else {
     Serial.print("failed, rc=");
     Serial.println(client.state());
     
     // Exponential backoff (max 30 seconds)
     reconnectDelay = min(reconnectDelay * 2, (uint32_t)MQTT_RECONNECT_MAX_DELAY_MS);
-    Serial.print("Next retry in:");
-   Serial.print(reconnectDelay / 1000);
+    Serial.print("Next retry in: ");
+    Serial.print(reconnectDelay / 1000);
     Serial.println("s");
     return false;
   }
@@ -632,7 +634,7 @@ void setupWebServer(){
     MDNS.addService("http", "tcp", WEB_SERVER_PORT);
   } else {
     Serial.println("Error setting up mDNS responder!");
- }
+  }
 }
 
 void setup() {
