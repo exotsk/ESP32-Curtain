@@ -716,10 +716,10 @@ Serial.println("Loading settings from NVS");
   Serial.println("MQTT configured");
   
   // Configure steppers
-  stepper1.setMaxSpeed(600);
-  stepper1.setAcceleration(300);
-  stepper2.setMaxSpeed(600);
-stepper2.setAcceleration(300);
+  stepper1.setMaxSpeed(STEPPER_MAX_SPEED);
+  stepper1.setAcceleration(STEPPER_ACCELERATION);
+  stepper2.setMaxSpeed(STEPPER_MAX_SPEED);
+stepper2.setAcceleration(STEPPER_ACCELERATION);
   Serial.println("Steppers configured");
   
   // Setup Web Server
