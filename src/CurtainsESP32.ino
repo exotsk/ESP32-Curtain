@@ -465,7 +465,7 @@ WiFi.mode(WIFI_STA);
 }
 
 void callback(char* topic, byte* payload, unsigned int length) {
- // Validatepayloadlength
+  // Validate payload length
   if (length >= (MSG_BUFFER_SIZE - 1)) {
     Serial.println("Error: Payload too large");
     return;
@@ -476,6 +476,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
     msgBuffer[i] = (char)payload[i];
   }
   msgBuffer[length] = '\0';
+}
   
 // Parse position value
   float position = atof(msgBuffer);
@@ -504,9 +505,9 @@ Serial.print("Error: Position outofrange: ");
 bool reconnect() {
   uint32_t now = millis();
   
-  // Non-blocking reconnectwith exponential backoff
-  if (now -lastReconnectAttempt < reconnectDelay){
-return false;
+  // Non-blocking reconnect with exponential backoff
+  if (now - lastReconnectAttempt < reconnectDelay) {
+    return false;
   }
   
   lastReconnectAttempt =now;
