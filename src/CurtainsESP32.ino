@@ -499,6 +499,7 @@ Serial.print("Error: Position outofrange: ");
   controllers[1].stepper->moveTo(targetSteps);
     Serial.print("Stepper 2 -> ");
     Serial.println(position);
+  }
 }
 
 bool reconnect() {
@@ -545,7 +546,7 @@ reconnectDelay = MQTT_RECONNECT_DELAY_MS;
   Serial.print(reconnectDelay / 1000);
     Serial.println("s");
     return false;
-}
+  }
 }
 
 // Web Server Handlers
