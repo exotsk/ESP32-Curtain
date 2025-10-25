@@ -732,43 +732,45 @@ void processStepperController(StepperController& ctrl) {
   int32_t currentPos = ctrl.stepper->currentPosition() / positionScale;
   
   // Check if hysteresis is active
-  if (ctrl.hysteresisActive){
+  if (ctrl.hysteresisActive) {
     // Disable hysteresis if position is outside dead zone
-    if((currentPos > STOP_HYSTERESIS) && (currentPos < curtainMax -STOP_HYSTERESIS)) {
+    if ((currentPos > STOP_HYSTERESIS) && (currentPos < curtainMax - STOP_HYSTERESIS)) {
       ctrl.hysteresisActive = false;
     }
   } else {
-// Check upperlimit switch
-    if(digitalRead(ctrl.upperLimitPin) == LOW) {
+    // Check upper limit switch
+    if (digitalRead(ctrl.upperLimitPin) == LOW) {
       ctrl.stepper->stop();
-ctrl.stepper->disableOutputs();
-     ctrl.stepper->setCurrentPosition(curtainMax* positionScale);
+      ctrl.stepper->disableOutputs();
+      ctrl.stepper->setCurrentPosition(curtainMax * positionScale);
       ctrl.hysteresisActive = true;
       Serial.println("Upper limit reached");
     }
     
-   // Checklower limit switchif (digitalRead(ctrl.lowerLimitPin) == LOW){
-ctrl.stepper->stop();
-     ctrl.stepper->disableOutputs();
-     ctrl.stepper->setCurrentPosition(0);
+    // Check lower limit switch
+    if (digitalRead(ctrl.lowerLimitPin) == LOW) {
+      ctrl.stepper->stop();
+      ctrl.stepper->disableOutputs();
+      ctrl.stepper->setCurrentPosition(0);
       ctrl.hysteresisActive = true;
-Serial.println("Lower limit reached");
-}
- }
+      Serial.println("Lower limit reached");
+    }
+  }
   
- // Publishposition if changed
+  // Publish position if changed
   if (currentPos != ctrl.lastPublishedPosition) {
-ctrl.lastPublishedPosition= currentPos;
-   snprintf(msgBuffer, MSG_BUFFER_SIZE,"%d", currentPos);
-    if (client.publish(ctrl.positionTopic, msgBuffer,true)) {
+    ctrl.lastPublishedPosition = currentPos;
+    snprintf(msgBuffer, MSG_BUFFER_SIZE, "%d", currentPos);
+    if (client.publish(ctrl.positionTopic, msgBuffer, true)) {
       // Position published successfully
-  }
+    }
   }
   
-// Run stepper if not at target
+  // Run stepper if not at target
   if (ctrl.targetPosition != ctrl.stepper->currentPosition()) {
     ctrl.stepper->run();
   }
+}
 
 void loop() {
   // Reset watchdog timer
