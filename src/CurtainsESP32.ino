@@ -536,7 +536,7 @@ Serial.print("Subscribed to: ");
 //Resetreconnect delay onsuccess
 reconnectDelay =MQTT_RECONNECT_DELAY_MS;
     return true;
-} else {
+  } else {
     Serial.print("failed, rc=");
     Serial.println(client.state());
     
@@ -618,19 +618,19 @@ void setupWebServer(){
   server.on("/", handleRoot);
   server.on("/set", handleSet);
   server.on("/stop", handleStop);
-server.on("/status", handleStatus);
+  server.on("/status", handleStatus);
   
-  //Start server
+  // Start server
   server.begin();
-Serial.println("Web server started");
+  Serial.println("Web server started");
   
 //Setup mDNSif (MDNS.begin(MDNS_HOSTNAME)){
     Serial.print("mDNS responder started: http://");
     Serial.print(MDNS_HOSTNAME);
    Serial.println(".local");
     MDNS.addService("http", "tcp",WEB_SERVER_PORT);
-}else {
-    Serial.println("Error setting upmDNS responder!");
+  } else {
+    Serial.println("Error setting up mDNS responder!");
  }
 }
 
@@ -728,7 +728,6 @@ Serial.println("Loading settings from NVS");
   Serial.println(WiFi.localIP());
   
   Serial.println("Setup complete!\n");
-}
 }
 
 // Unified stepper control function - eliminates code duplication
