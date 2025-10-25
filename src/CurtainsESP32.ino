@@ -729,7 +729,7 @@ Serial.print("Web interface available at: http://");
 
 // Unified steppercontrol function - eliminates code duplication
 void processStepperController(StepperController& ctrl) {
-int32_t currentPos = ctrl.stepper->currentPosition() / positionScale;
+  int32_t currentPos = ctrl.stepper->currentPosition() / positionScale;
   
   // Check if hysteresis is active
   if (ctrl.hysteresisActive){
