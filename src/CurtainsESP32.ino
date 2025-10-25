@@ -90,14 +90,14 @@ const char HTML_PAGE[] PROGMEM = R"rawliteral(
     <style>
         *{ margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: -apple-system,BlinkMacSystemFont,'Segoe UI', Roboto,Oxygen, Ubuntu, sans-serif;
-background: linear-gradient(135deg, #667eea 0%,#764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
-           justify-content: center;
-           align-items: center;
-padding: 20px;
-}
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
 .container {
             background:white;
             border-radius: 20px;
@@ -466,16 +466,16 @@ WiFi.mode(WIFI_STA);
 
 void callback(char* topic, byte* payload, unsigned int length) {
  // Validatepayloadlength
-  if(length>= MSG_BUFFER_SIZE) {
+  if (length >= (MSG_BUFFER_SIZE - 1)) {
     Serial.println("Error: Payload too large");
     return;
   }
   
- // Copy payload to buffer
- for (unsigned int i = 0; i < length; i++) {
-    msgBuffer[i]= payload[i];
- }
- msgBuffer[length] = '\0';
+  // Copy payload to buffer
+  for (unsigned int i = 0; i < length; i++) {
+    msgBuffer[i] = (char)payload[i];
+  }
+  msgBuffer[length] = '\0';
   
 // Parse position value
   float position = atof(msgBuffer);
@@ -533,7 +533,7 @@ Serial.print("Subscribed to: ");
       Serial.println(MQTT_STEP2);
     }
 //Resetreconnect delay onsuccess
-reconnectDelay =MQTT_RECONNECT_DELAY_MS;
+reconnectDelay = MQTT_RECONNECT_DELAY_MS;
     return true;
   } else {
     Serial.print("failed, rc=");
@@ -734,11 +734,10 @@ void processStepperController(StepperController& ctrl) {
 int32_t currentPos = ctrl.stepper->currentPosition() / positionScale;
   
   // Check if hysteresis is active
-  if (ctrl.hysteresisActive){
+  if (ctrl.hysteresisActive) {
     // Disable hysteresis if position is outside dead zone
-    if(((currentPos > STOP_HYSTERESIS) &&(currentPos < curtainMax - STOP_HYSTERESIS)) ||
-        (currentPos < -STOP_HYSTERESIS) || (currentPos > curtainMax + STOP_HYSTERESIS)){
-    ctrl.hysteresisActive =false;
+    if ((currentPos > STOP_HYSTERESIS) && (currentPos < curtainMax - STOP_HYSTERESIS)) {
+      ctrl.hysteresisActive = false;
     }
   } else {
 // Check upper limit switch
